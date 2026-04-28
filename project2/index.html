@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>赵纬信 · AI编程探索者</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       CSS 变量 & 重置
+    ============================================================ */
+    :root {
+      --bg: #080808;
+      --surface: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e8e8;
+      --muted: #606060;
+      --accent: #007aff;
+      --accent-glow: rgba(0,122,255,0.15);
+      --mono: 'JetBrains Mono', monospace;
+      --serif: 'Noto Serif SC', serif;
+      --transition-page: 0.55s cubic-bezier(0.65,0,0.35,1);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'PingFang SC', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ============================================================
+       自定义光标
+    ============================================================ */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, opacity 0.3s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.25s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor.hover { transform: scale(2.5); }
+    .cursor-ring.hover { transform: scale(0.6); opacity: 0; }
+
+    /* ============================================================
+       噪点纹理背景
+    ============================================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+
+    /* ============================================================
+       导航栏
+    ============================================================ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 500;
+      padding: 1.2rem 0;
+      background: rgba(8,8,8,0.8);
+      backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 0.5px solid var(--border);
+      transition: background 0.4s ease;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      opacity: 0.9;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 0.25rem; }
+
+    .nav-link {
+      background: none; border: none;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      cursor: none;
+      transition: color 0.25s, background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--surface);
+      border-radius: inherit;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover::before, .nav-link.active::before { transform: scaleX(1); }
+    .nav-link:hover, .nav-link.active { color: #fff; }
+    .nav-link.active { font-weight: 500; }
+
+    /* ============================================================
+       页面容器 & 切换动画
+    ============================================================ */
+    .page-wrapper {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      min-height: 100vh;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(24px);
+      transition: opacity var(--transition-page), transform var(--transition-page);
+      will-change: opacity, transform;
+    }
+
+    .page.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+      position: relative;
+    }
+
+    .page.exit {
+      opacity: 0;
+      transform: translateY(-24px);
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       页面转场遮罩
+    ============================================================ */
+    .page-curtain {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 800;
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.4s cubic-bezier(0.76,0,0.24,1);
+      pointer-events: none;
+    }
+    .page-curtain.in { transform: scaleY(1); transform-origin: bottom; }
+    .page-curtain.out { transform: scaleY(0); transform-origin: top; }
+
+    /* ============================================================
+       通用区块
+    ============================================================ */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    section { padding: 5rem 0; }
+
+    .section-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    /* ============================================================
+       首页 Hero
+    ============================================================ */
+    #page-home {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .line-2 {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
+      font-weight: 700;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      cursor: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.1);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn:hover::after { opacity: 1; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary { background: #fff; color: #000; }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 0.5px solid rgba(255,255,255,0.25);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.6); }
+
+    /* 滚动指示器 */
+    .scroll-hint {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.3;
+      animation: floatY 2.5s ease-in-out infinite;
+    }
+    .scroll-hint span { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+    }
+
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* 浮动粒子 */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      width: 1px; height: 1px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      animation: drift linear infinite;
+    }
+    @keyframes drift {
+      from { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      to { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    /* ============================================================
+       关于页面
+    ============================================================ */
+    #page-about {
+      padding-top: 8rem;
+    }
+
+    .about-header { margin-bottom: 4rem; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text {
+      color: rgba(232,232,232,0.7);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+    .about-text p { margin-bottom: 1.4rem; }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .skill-tags span {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      color: var(--muted);
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .skill-tags span:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      transition: all 0.35s ease;
+      cursor: default;
+    }
+    .stat-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-4px);
+    }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.8rem;
+      padding-left: 0.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.7rem; top: 6px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .timeline-item h4 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .timeline-item p { font-size: 0.78rem; color: var(--muted); }
+
+    /* ============================================================
+       作品页面
+    ============================================================ */
+    #page-works { padding-top: 8rem; }
+
+    .works-header { margin-bottom: 1rem; }
+    .works-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-top: 0.8rem;
+      max-width: 520px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 0.5rem;
+      margin: 2.5rem 0;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      border: 0.5px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: none;
+      transition: all 0.25s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.8rem;
+      cursor: default;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      background: rgba(255,255,255,0.055);
+      border-color: rgba(255,255,255,0.13);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .project-icon-wrap {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .project-tags span {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid var(--border);
+      color: var(--muted);
+    }
+
+    .reflection-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .reflection-card::after {
+      content: '"';
+      position: absolute;
+      right: 1.5rem; top: -0.5rem;
+      font-family: var(--serif);
+      font-size: 8rem;
+      color: var(--accent-glow);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .reflection-card h3 { font-size: 1.2rem; margin-bottom: 1rem; }
+    .reflection-card p { color: rgba(232,232,232,0.65); font-size: 0.9rem; line-height: 1.8; margin-bottom: 0.8rem; }
+    .reflection-card ul {
+      margin-left: 1.2rem;
+      color: rgba(232,232,232,0.6);
+      font-size: 0.88rem;
+      line-height: 2;
+    }
+
+    /* ============================================================
+       联系页面
+    ============================================================ */
+    #page-contact {
+      display: flex;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 6rem;
+    }
+
+    .contact-inner { width: 100%; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .contact-left p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+
+    .contact-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 0.8rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+      cursor: none;
+    }
+    .contact-item:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateX(6px);
+    }
+    .contact-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .contact-info { flex: 1; }
+    .contact-info strong { display: block; font-size: 0.85rem; margin-bottom: 0.15rem; }
+    .contact-info span { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+
+    /* 联系右侧：小留言板 */
+    .message-form { display: flex; flex-direction: column; gap: 1rem; }
+    .message-form label { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; display: block; margin-bottom: 0.3rem; }
+    .message-form input,
+    .message-form textarea {
+      width: 100%;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 0.6rem;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      resize: none;
+    }
+    .message-form input:focus,
+    .message-form textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .message-form textarea { min-height: 100px; }
+    .form-send {
+      align-self: flex-start;
+      padding: 0.65rem 1.5rem;
+      border-radius: 24px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: none;
+      cursor: none;
+      transition: all 0.3s ease;
+    }
+    .form-send:hover { background: #0062cc; transform: translateY(-2px); }
+    .form-success {
+      display: none;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-top: 0.5rem;
+    }
+
+    /* ============================================================
+       AI 对话浮窗
+    ============================================================ */
+    .ai-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      z-index: 600;
+      box-shadow: 0 4px 24px rgba(0,122,255,0.4);
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .ai-fab:hover { transform: scale(1.12); box-shadow: 0 6px 32px rgba(0,122,255,0.6); }
+    .ai-fab svg { width: 22px; height: 22px; fill: #fff; }
+    .ai-fab-label {
+      position: absolute;
+      right: 60px;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      font-family: var(--mono);
+    }
+    .ai-fab:hover .ai-fab-label { opacity: 1; }
+
+    .ai-panel {
+      position: fixed;
+      bottom: 6rem;
+      right: 2rem;
+      width: 360px;
+      max-height: 500px;
+      background: rgba(14,14,14,0.97);
+      backdrop-filter: blur(24px);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 1.4rem;
+      z-index: 600;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.9) translateY(20px);
+      transform-origin: bottom right;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+    .ai-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .ai-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      border-bottom: 0.5px solid var(--border);
+      flex-shrink: 0;
+    }
+    .ai-panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+    .ai-panel-dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .ai-close {
+      background: none; border: none;
+      color: var(--muted);
+      cursor: none;
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .ai-close:hover { color: #fff; }
+
+    .ai-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.1) transparent;
+    }
+
+    .ai-msg {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 1rem;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      animation: msgIn 0.3s ease;
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .ai-msg.bot {
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .ai-msg.user {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-typing {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid var(--border);
+      padding: 0.65rem 1rem;
+      border-radius: 1rem;
+      border-bottom-left-radius: 4px;
+      display: none;
+    }
+    .ai-typing.show { display: block; }
+    .typing-dots { display: flex; gap: 4px; }
+    .typing-dots span {
+      width: 5px; height: 5px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: typingBounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%,60%,100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); }
+    }
+
+    .ai-input-row {
+      padding: 0.8rem;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+    .ai-input {
+      flex: 1;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 24px;
+      padding: 0.55rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .ai-input:focus { border-color: var(--accent); }
+    .ai-send {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .ai-send:hover { background: #0062cc; transform: scale(1.1); }
+    .ai-send svg { width: 14px; height: 14px; fill: #fff; }
+
+    /* ============================================================
+       进度指示器（顶部）
+    ============================================================ */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1000;
+      width: 0%;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ============================================================
+       页脚
+    ============================================================ */
+    .footer {
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 0.5px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================================
+       滚动动画工具
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================================
+       响应式
+    ============================================================ */
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .ai-panel { width: calc(100vw - 2rem); right: 1rem; }
+      .hero-title { font-size: 2.2rem; }
+      .nav-links { gap: 0; }
+      .nav-link { padding: 0.4rem 0.6rem; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 光标 -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- 页面转场遮罩 -->
+<div class="page-curtain" id="curtain"></div>
+
+<!-- 顶部进度条 -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- 导航 -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="logo">ZWX<span>.</span>dev</div>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link active" data-page="home">首页</button>
+      <button class="nav-link" data-page="about">关于</button>
+      <button class="nav-link" data-page="works">AI作品</button>
+      <button class="nav-link" data-page="contact">联系</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== 页面容器 ===== -->
+<div class="page-wrapper">
+
+  <!-- 首页 -->
+  <div class="page active" id="page-home">
+    <div class="particles" id="particles"></div>
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="dot"></span> AI编程 · 持续学习中</div>
+      <h1 class="hero-title">
+        赵纬信<br>
+        <span class="line-2">让AI成为创意的放大器</span>
+      </h1>
+      <p class="hero-desc">专科 · 自学前端。用AI辅助编程，降低创作门槛，让更多人能用代码表达自己。</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" data-page="works">查看AI作品 →</button>
+        <button class="btn btn-outline" data-page="contact">联系我</button>
+      </div>
+      <div class="scroll-hint">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关于页面 -->
+  <div class="page" id="page-about">
+    <div class="container">
+      <div class="about-header reveal">
+        <span class="section-badge">// about me</span>
+        <h2 class="section-title">一个正在学习AI编程的专科生</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal reveal-delay-1">
+          <p>我是赵纬信，一名自学前端开发的专科生。我相信在AI时代，编程不再是少数人的专利，而是每个人都可以掌握的技能。</p>
+          <p>我正通过AI辅助学习HTML、CSS、JavaScript，并尝试用这些技术做出自己的作品。这个网站就是一个例子——在AI的帮助下，我完成了从设计到实现的全部过程。</p>
+          <div class="skill-tags">
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
+            <span>AI辅助编程</span><span>提示词工程</span><span>Git</span>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-num" data-count="3">0</span>
+              <div class="stat-label">个月自学</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" data-count="5">0</span>
+              <div class="stat-label">AI辅助项目</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-num" data-count="100">0</span>
+              <div class="stat-label">小时编码</div>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <h4>开始自学前端</h4>
+              <p>从HTML基础出发，了解网页的基本构成</p>
+            </div>
+            <div class="timeline-item">
+              <h4>发现AI辅助编程</h4>
+              <p>利用Claude、Copilot等工具加速学习进程</p>
+            </div>
+            <div class="timeline-item">
+              <h4>独立完成项目</h4>
+              <p>从构思到上线，全程AI协作完成作品集</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer reveal"><div class="container">© 2025 赵纬信 · 持续更新中</div></div>
+  </div>
+
+  <!-- 作品页面 -->
+  <div class="page" id="page-works">
+    <div class="container">
+      <div class="works-header reveal">
+        <span class="section-badge">// projects</span>
+        <h1 class="section-title">用AI辅助完成的编程作品</h1>
+        <p class="works-desc">每一个项目都是在AI的帮助下完成的 —— 从构思到代码，从调试到上线。</p>
+      </div>
+
+      <div class="filter-row reveal reveal-delay-1">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="frontend">前端</button>
+        <button class="filter-btn" data-filter="tool">工具</button>
+        <button class="filter-btn" data-filter="ai">AI应用</button>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card reveal reveal-delay-1" data-category="frontend">
+          <div class="project-icon-wrap">✨</div>
+          <h3 class="project-title">个人动态作品集网站</h3>
+          <p class="project-desc">完全在AI辅助下开发的个人作品集。包含丝滑切换动画、响应式布局与交互设计。</p>
+          <div class="project-tags"><span>HTML5</span><span>CSS3</span><span>JavaScript</span></div>
+        </div>
+        <div class="project-card reveal reveal-delay-2" data-category="tool">
+          <div class="project-icon-wrap">🔧</div>
+          <h3 class="project-title">AI对话笔记工具</h3>
+          <p class="project-desc">记录和AI交流时获得的好想法，数据存在浏览器本地，刷新不丢失。</p>
+          <div class="project-tags"><span>JavaScript</span><span>LocalStorage</span><span>HTML/CSS</span></div>
+        </div>
+        <div class="project-card reveal reveal-delay-3" data-category="ai">
+          <div class="project-icon-wrap">📖</div>
+          <h3 class="project-title">前端学习路线图</h3>
+          <p class="project-desc">通过设计精确的提示词，让AI帮助规划从零基础到就业的前端学习路径。</p>
+          <div class="project-tags"><span>提示词设计</span><span>AI对话</span><span>学习规划</span></div>
+        </div>
+      </div>
+
+      <div class="reflection-card reveal">
+        <h3>📡 为什么要用AI编程</h3>
+        <p>AI不是替代程序员，而是放大一个人的能力。对于自学者来说，AI可以：</p>
+        <ul>
+          <li>解释报错信息，不认识的错误也能找到方向</li>
+          <li>生成代码片段，节省重复性工作的时间</li>
+          <li>帮助理解复杂概念，用更通俗的方式讲解</li>
+          <li>Review代码，指出潜在问题和优化空间</li>
+        </ul>
+        <p style="margin-top:1rem">我的目标是：成为一个会用AI工具的前端开发者，而不是被AI替代的人。</p>
+      </div>
+    </div>
+    <div class="footer reveal"><div class="container">© 2025 赵纬信 · 每个项目都有AI的参与</div></div>
+  </div>
+
+  <!-- 联系页面 -->
+  <div class="page" id="page-contact">
+    <div class="container contact-inner">
+      <div class="reveal">
+        <span class="section-badge">// contact</span>
+        <h2 class="section-title">如果你也在用AI学编程<br>欢迎一起交流</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="reveal reveal-delay-1">
+          <p>无论你是AI辅助编程的爱好者，还是同样在自学路上的同学，都欢迎联系我。</p>
+          <div class="contact-list">
+            <a href="mailto:CONNOR0529@outlook.com" class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div class="contact-info">
+                <strong>邮件</strong>
+                <span>CONNOR0529@outlook.com</span>
+              </div>
+            </a>
+            <a href="#" class="contact-item">
+              <div class="contact-icon">💻</div>
+              <div class="contact-info">
+                <strong>GitHub</strong>
+                <span>github.com/connorlikewolf</span>
+              </div>
+            </a>
+            <a href="#" class="contact-item">
+              <div class="contact-icon">📝</div>
+              <div class="contact-info">
+                <strong>学习笔记</strong>
+                <span>建设中，敬请期待</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="message-form">
+            <div>
+              <label>YOUR NAME</label>
+              <input type="text" placeholder="你的名字" id="formName">
+            </div>
+            <div>
+              <label>MESSAGE</label>
+              <textarea placeholder="想说什么都行～" id="formMsg"></textarea>
+            </div>
+            <button class="form-send" id="formSend">发送消息 ✉</button>
+            <div class="form-success" id="formSuccess">✓ 已收到，我会尽快回复！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer reveal"><div class="container">© 2025 赵纬信 · 在AI时代学习编程</div></div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+<!-- AI 对话浮窗 -->
+<button class="ai-fab" id="aiFab" title="和AI聊聊">
+  <span class="ai-fab-label">和AI聊聊</span>
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+  <svg viewBox="0 0 24 24" style="position:absolute"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-header">
+    <div class="ai-panel-title">
+      <div class="ai-panel-dot"></div>
+      AI 助手 · Claude
+    </div>
+    <button class="ai-close" id="aiClose">✕</button>
+  </div>
+  <div class="ai-messages" id="aiMessages">
+    <div class="ai-msg bot">你好！我是赵纬信网站的AI助手 👋<br>可以问我关于他的项目、AI编程经历，或者任何前端开发的问题～</div>
+  </div>
+  <div class="ai-typing" id="aiTyping">
+    <div class="typing-dots"><span></span><span></span><span></span></div>
+  </div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="aiInput" placeholder="输入消息…" type="text">
+    <button class="ai-send" id="aiSendBtn">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   自定义光标
+============================================================ */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = -100, my = -100, rx = -100, ry = -100;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 5 + 'px';
+  cursor.style.top = my - 5 + 'px';
+});
+
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top = ry - 18 + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+document.querySelectorAll('button, a, input, textarea, .project-card, .stat-card, .contact-item, .skill-tags span').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+});
+
+/* ============================================================
+   粒子生成（首页）
+============================================================ */
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 35; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.cssText = `
+    left: ${Math.random() * 100}%;
+    width: ${Math.random() * 2 + 1}px;
+    height: ${Math.random() * 2 + 1}px;
+    animation-duration: ${Math.random() * 12 + 8}s;
+    animation-delay: ${Math.random() * 8}s;
+    opacity: ${Math.random() * 0.5 + 0.1};
+  `;
+  particlesEl.appendChild(p);
+}
+
+/* ============================================================
+   页面路由 & 丝滑切换
+============================================================ */
+const pages = document.querySelectorAll('.page');
+const navLinks = document.querySelectorAll('.nav-link[data-page]');
+const curtain = document.getElementById('curtain');
+let currentPage = 'home';
+let switching = false;
+
+function switchPage(target) {
+  if (target === currentPage || switching) return;
+  switching = true;
+
+  // 幕布进入
+  curtain.classList.add('in');
+
+  setTimeout(() => {
+    // 隐藏当前页
+    const oldPage = document.getElementById('page-' + currentPage);
+    oldPage.classList.remove('active');
+    oldPage.classList.add('exit');
+
+    // 显示新页
+    const newPage = document.getElementById('page-' + target);
+    newPage.classList.remove('exit');
+    newPage.classList.add('active');
+
+    // 更新导航状态
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === target));
+    currentPage = target;
+
+    // 幕布退出
+    curtain.classList.remove('in');
+    curtain.classList.add('out');
+
+    setTimeout(() => {
+      curtain.classList.remove('out');
+      oldPage.classList.remove('exit');
+      switching = false;
+
+      // 触发新页 reveal 动画
+      triggerReveals(newPage);
+      // 数字计数
+      triggerCounters(newPage);
+      // 滚回顶部
+      newPage.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }, 500);
+  }, 380);
+}
+
+// 导航点击
+document.getElementById('navLinks').addEventListener('click', e => {
+  const btn = e.target.closest('[data-page]');
+  if (btn) switchPage(btn.dataset.page);
+});
+
+// 其他按钮跳转
+document.querySelectorAll('[data-page]:not(.nav-link)').forEach(btn => {
+  btn.addEventListener('click', () => switchPage(btn.dataset.page));
+});
+
+/* ============================================================
+   滚动 Reveal 动画
+============================================================ */
+function triggerReveals(container) {
+  const els = container.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// 初始触发首页
+triggerReveals(document.getElementById('page-home'));
+
+/* ============================================================
+   数字计数动画
+============================================================ */
+function triggerCounters(container) {
+  container.querySelectorAll('.stat-num[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current) + (target >= 100 ? '+' : '+');
+      if (current >= target) clearInterval(timer);
+    }, 30);
+  });
+}
+
+/* ============================================================
+   顶部进度条（随滚动）
+============================================================ */
+const bar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  bar.style.width = pct + '%';
+});
+
+/* ============================================================
+   作品筛选
+============================================================ */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.project-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.style.transition = 'all 0.4s ease';
+      card.style.opacity = show ? '1' : '0.2';
+      card.style.transform = show ? '' : 'scale(0.96)';
+      card.style.pointerEvents = show ? '' : 'none';
+    });
+  });
+});
+
+/* ============================================================
+   联系表单假提交
+============================================================ */
+document.getElementById('formSend').addEventListener('click', () => {
+  const name = document.getElementById('formName').value.trim();
+  const msg = document.getElementById('formMsg').value.trim();
+  if (!name || !msg) return;
+  const btn = document.getElementById('formSend');
+  btn.textContent = '发送中…';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+    document.getElementById('formName').value = '';
+    document.getElementById('formMsg').value = '';
+  }, 1200);
+});
+
+/* ============================================================
+   AI 对话浮窗
+============================================================ */
+const aiFab = document.getElementById('aiFab');
+const aiPanel = document.getElementById('aiPanel');
+const aiClose = document.getElementById('aiClose');
+const aiInput = document.getElementById('aiInput');
+const aiSendBtn = document.getElementById('aiSendBtn');
+const aiMessages = document.getElementById('aiMessages');
+const aiTyping = document.getElementById('aiTyping');
+
+let panelOpen = false;
+const chatHistory = [];
+
+const SYSTEM_PROMPT = `你是赵纬信个人网站上的AI助手。赵纬信是一名自学前端的专科生，正在用AI辅助编程（HTML/CSS/JavaScript），已完成3+个月自学、5+个项目、100+小时编码。
+他的网站包含：首页（个人介绍）、关于（技能与学习历程）、AI作品（项目展示）、联系（邮件与GitHub）。
+请用轻松、鼓励的口吻回答，可以聊前端学习、AI编程技巧、赵纬信的项目情况。回答简短友好，控制在150字以内。`;
+
+aiFab.addEventListener('click', () => {
+  panelOpen = !panelOpen;
+  aiPanel.classList.toggle('open', panelOpen);
+  if (panelOpen) setTimeout(() => aiInput.focus(), 400);
+});
+
+aiClose.addEventListener('click', () => {
+  panelOpen = false;
+  aiPanel.classList.remove('open');
+});
+
+function appendMsg(text, role) {
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  div.textContent = text;
+  aiMessages.appendChild(div);
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+}
+
+async function sendMessage() {
+  const text = aiInput.value.trim();
+  if (!text) return;
+  aiInput.value = '';
+
+  appendMsg(text, 'user');
+  chatHistory.push({ role: 'user', content: text });
+
+  aiTyping.classList.add('show');
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+
+  try {
+    const res = await fetch("https://api.deepseek.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // ⭐ 把你的Key写这里
+        "Authorization": "Bearer sk-03d2c97eeec14d70906540606a3be975"
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...chatHistory
+        ],
+        temperature: 0.7
+      })
+    });
+
+    const data = await res.json();
+
+    const reply =
+      data.choices?.[0]?.message?.content ||
+      "AI暂时没回复";
+
+    chatHistory.push({ role: 'assistant', content: reply });
+
+    aiTyping.classList.remove('show');
+    appendMsg(reply, 'bot');
+
+  } catch (err) {
+    console.error(err);
+    aiTyping.classList.remove('show');
+    appendMsg('网络有点问题 😅', 'bot');
+  }
+}
+
+aiSendBtn.addEventListener('click', sendMessage);
+aiInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+/* ============================================================
+   初始化 reveal
+============================================================ */
+setTimeout(() => triggerReveals(document.getElementById('page-home')), 100);
+</script>
+</body>
+</html>
