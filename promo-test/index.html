@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>优享会员 · 专属优惠</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Bebas+Neue&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF6F0;
+    --warm-white: #FFFDF9;
+    --gold: #C8973A;
+    --gold-light: #E8B96A;
+    --gold-pale: #F5E6C8;
+    --ink: #1A1410;
+    --ink-mid: #3D2F22;
+    --ink-light: #8B7355;
+    --red: #C0392B;
+    --red-soft: #E74C3C;
+    --sage: #6B8F6B;
+    --shadow: rgba(26,20,16,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Noto Sans SC', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ══════════════ NOISE TEXTURE OVERLAY ══════════════ */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ══════════════ HEADER ══════════════ */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,246,240,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--gold-pale);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .header-nav a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-light);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .header-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .header-nav a:hover { color: var(--gold); }
+  .header-nav a:hover::after { transform: scaleX(1); }
+
+  /* ══════════════ HERO ══════════════ */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg-circle {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-pale) 0%, transparent 70%);
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    animation: float-circle 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes float-circle {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-20px); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.4s forwards;
+  }
+
+  .hero-title .accent {
+    color: var(--gold);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--ink-light);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    animation: fade-up 0.8s 0.6s forwards;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════ CATEGORY TABS ══════════════ */
+  .tabs-wrapper {
+    padding: 0 40px 40px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.8s forwards;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--gold-pale);
+    border-radius: 60px;
+    padding: 6px;
+    width: fit-content;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .tab-slider {
+    position: absolute;
+    top: 6px; left: 6px;
+    height: calc(100% - 12px);
+    background: var(--ink);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 0;
+  }
+
+  .tab-btn {
+    position: relative;
+    z-index: 1;
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 50px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-light);
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active { color: var(--cream); }
+
+  /* ══════════════ COUPON GRID ══════════════ */
+  .coupons-section {
+    padding: 0 40px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .coupons-panel { display: none; }
+  .coupons-panel.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    animation: panel-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ══════════════ COUPON CARD ══════════════ */
+  .coupon {
+    position: relative;
+    background: var(--warm-white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px var(--shadow), 0 0 0 1px rgba(200,151,58,0.1);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
+    opacity: 0;
+    animation: card-appear 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .coupon:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 20px 50px rgba(26,20,16,0.16), 0 0 0 1px rgba(200,151,58,0.2);
+  }
+
+  .coupon:nth-child(1) { animation-delay: 0.05s; }
+  .coupon:nth-child(2) { animation-delay: 0.12s; }
+  .coupon:nth-child(3) { animation-delay: 0.19s; }
+  .coupon:nth-child(4) { animation-delay: 0.26s; }
+  .coupon:nth-child(5) { animation-delay: 0.33s; }
+  .coupon:nth-child(6) { animation-delay: 0.40s; }
+
+  @keyframes card-appear {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Coupon top color band */
+  .coupon-band {
+    height: 6px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .coupon.red .coupon-band {
+    background: linear-gradient(90deg, var(--red), #E74C3C, var(--red));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .coupon.sage .coupon-band {
+    background: linear-gradient(90deg, var(--sage), #8FA88F, var(--sage));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  /* Tag ribbon */
+  .coupon-tag {
+    position: absolute;
+    top: 16px; right: -1px;
+    background: var(--gold);
+    color: white;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 4px 10px 4px 12px;
+    clip-path: polygon(8px 0%, 100% 0%, 100% 100%, 8px 100%, 0% 50%);
+  }
+
+  .coupon.red .coupon-tag { background: var(--red); }
+  .coupon.sage .coupon-tag { background: var(--sage); }
+
+  /* Main body */
+  .coupon-body {
+    padding: 24px 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .coupon-amount {
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .coupon-amount .unit {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--gold);
+    vertical-align: top;
+    line-height: 2;
+  }
+
+  .coupon-amount .value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+
+  .coupon.red .coupon-amount .unit,
+  .coupon.red .coupon-amount .value { color: var(--red); }
+
+  .coupon.sage .coupon-amount .unit,
+  .coupon.sage .coupon-amount .value { color: var(--sage); }
+
+  .coupon-divider-v {
+    width: 1px;
+    height: 60px;
+    background: repeating-linear-gradient(to bottom, var(--gold-pale) 0px, var(--gold-pale) 5px, transparent 5px, transparent 10px);
+    flex-shrink: 0;
+  }
+
+  .coupon-info { flex: 1; min-width: 0; }
+
+  .coupon-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .coupon-desc {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Tear perforation line */
+  .tear-line {
+    position: relative;
+    margin: 20px 0 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .tear-line::before,
+  .tear-line::after {
+    content: '';
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--cream);
+    flex-shrink: 0;
+    margin: 0 -10px;
+    border: 1px solid rgba(200,151,58,0.1);
+  }
+
+  .tear-dots {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--gold-pale) 0px, var(--gold-pale) 6px, transparent 6px, transparent 12px);
+  }
+
+  /* Coupon footer */
+  .coupon-footer {
+    padding: 16px 24px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .coupon-expire {
+    font-size: 11px;
+    color: var(--ink-light);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .coupon-btn {
+    position: relative;
+    padding: 9px 22px;
+    border: none;
+    border-radius: 50px;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .coupon-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .coupon-btn:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(26,20,16,0.25); }
+  .coupon-btn:hover::before { opacity: 1; }
+  .coupon-btn:active { transform: scale(0.97); }
+
+  .coupon.red .coupon-btn { background: var(--red); }
+  .coupon.sage .coupon-btn { background: var(--sage); }
+
+  /* ══════════════ TEAR ANIMATION OVERLAY ══════════════ */
+  .tear-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .tear-overlay.active { pointer-events: all; }
+
+  .tear-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,20,16,0.6);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .tear-overlay.active .tear-backdrop { opacity: 1; }
+
+  .tear-card-container {
+    position: relative;
+    width: 360px;
+    transform: scale(0.85);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .tear-overlay.active .tear-card-container { transform: scale(1); }
+
+  .tear-top, .tear-bottom {
+    background: var(--warm-white);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tear-top {
+    border-radius: 20px 20px 0 0;
+    transform-origin: top center;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.3s;
+  }
+
+  .tear-bottom {
+    border-radius: 0 0 20px 20px;
+    transform-origin: bottom center;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.3s;
+  }
+
+  .tear-overlay.tearing .tear-top { transform: translateY(-12px) rotate(-1deg); }
+  .tear-overlay.tearing .tear-bottom { transform: translateY(12px) rotate(1deg); }
+  .tear-overlay.torn .tear-top { transform: translateY(-20px) rotate(-2deg); }
+  .tear-overlay.torn .tear-bottom { transform: translateY(20px) rotate(2deg); }
+
+  .tear-mid-line {
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 8px, transparent 8px, transparent 16px);
+    position: relative;
+  }
+
+  .tear-mid-line::before,
+  .tear-mid-line::after {
+    content: '';
+    position: absolute;
+    width: 24px; height: 24px;
+    background: rgba(26,20,16,0.6);
+    border-radius: 50%;
+    top: 50%; transform: translateY(-50%);
+  }
+  .tear-mid-line::before { left: -12px; }
+  .tear-mid-line::after { right: -12px; }
+
+  .tear-main-content { padding: 28px 28px 0; }
+
+  .tear-amount-big {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .tear-unit { font-size: 20px; color: var(--gold); font-weight: 500; }
+  .tear-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .tear-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .tear-desc-full {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .tear-footer-content { padding: 20px 28px 28px; }
+
+  .tear-code-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .tear-code {
+    flex: 1;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+  }
+
+  .copy-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--gold-pale);
+    border-radius: 8px;
+    background: white;
+    color: var(--gold);
+    font-size: 12px;
+    font-family: 'Noto Sans SC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: var(--gold); color: white; border-color: var(--gold); }
+
+  .tear-close-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .tear-close-btn:hover { background: var(--gold); }
+
+  /* ══════════════ CONFETTI PARTICLE ══════════════ */
+  .particle {
+    position: fixed;
+    width: 6px; height: 6px;
+    border-radius: 1px;
+    pointer-events: none;
+    z-index: 600;
+    animation: particle-fall 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  @keyframes particle-fall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(200px) rotate(360deg) scale(0.3); }
+  }
+
+  /* ══════════════ BANNER ══════════════ */
+  .banner-strip {
+    background: var(--ink);
+    color: var(--gold-pale);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .banner-track {
+    display: flex;
+    gap: 60px;
+    white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+
+  .banner-track span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .banner-track span::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ══════════════ FEATURED SECTION ══════════════ */
+  .featured-section {
+    padding: 20px 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-pale);
+  }
+
+  .big-coupon {
+    background: linear-gradient(135deg, var(--ink) 0%, #2D1F14 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s;
+    opacity: 0;
+    animation: fade-up 0.8s 1s forwards;
+  }
+
+  .big-coupon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 30px 80px rgba(26,20,16,0.3);
+  }
+
+  .big-coupon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(200,151,58,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .big-left {
+    padding: 48px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .big-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .big-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .big-desc {
+    font-size: 14px;
+    color: rgba(250,246,240,0.5);
+    font-weight: 300;
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .big-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    border-radius: 50px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .big-btn:hover { background: var(--gold-light); transform: scale(1.04); }
+
+  .big-right {
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px dashed rgba(200,151,58,0.2);
+    position: relative;
+  }
+
+  .big-right::before, .big-right::after {
+    content: '';
+    position: absolute;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--cream);
+    left: -15px;
+  }
+
+  .big-right::before { top: -15px; }
+  .big-right::after { bottom: -15px; }
+
+  .big-amount {
+    text-align: center;
+  }
+
+  .big-amount .big-unit { font-size: 22px; color: var(--gold); font-weight: 400; }
+  .big-amount .big-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    line-height: 1;
+    color: var(--gold);
+    display: block;
+    animation: count-up 1s 1.2s both;
+  }
+
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .big-amount .big-label {
+    font-size: 11px;
+    color: rgba(200,151,58,0.6);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+
+  /* ══════════════ FOOTER ══════════════ */
+  footer {
+    border-top: 1px solid var(--gold-pale);
+    padding: 40px;
+    text-align: center;
+    color: var(--ink-light);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+  }
+
+  /* ══════════════ COUNTDOWN ══════════════ */
+  .countdown {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .countdown-unit {
+    text-align: center;
+  }
+
+  .countdown-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--red);
+    display: block;
+    line-height: 1;
+  }
+
+  .countdown-label {
+    font-size: 9px;
+    color: var(--ink-light);
+    letter-spacing: 0.1em;
+  }
+
+  .countdown-sep {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  /* ══════════════ USED INDICATOR ══════════════ */
+  .used-badge {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: rgba(250,246,240,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+  }
+
+  .coupon.used .used-badge { opacity: 1; pointer-events: all; }
+
+  .used-stamp {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--ink-light);
+    letter-spacing: 0.1em;
+    border: 3px solid var(--ink-light);
+    border-radius: 8px;
+    padding: 4px 16px;
+    opacity: 0.4;
+    transform: rotate(-12deg);
+  }
+
+  /* ══════════════ SCROLL REVEAL ══════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    .hero { padding: 60px 20px 40px; }
+    .tabs-wrapper { padding: 0 20px 32px; }
+    .coupons-section, .featured-section { padding: 0 20px 60px; }
+    .big-coupon { grid-template-columns: 1fr; }
+    .big-right { border-left: none; border-top: 1px dashed rgba(200,151,58,0.2); }
+    .tear-card-container { width: 92vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    优享会员
+  </div>
+  <ul class="header-nav">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">优惠</a></li>
+    <li><a href="#">会员</a></li>
+    <li><a href="#">我的</a></li>
+  </ul>
+</header>
+
+<!-- ══ BANNER MARQUEE ══ -->
+<div class="banner-strip">
+  <div class="banner-track" id="bannerTrack">
+    <span>限时特惠进行中</span>
+    <span>新用户首单立减100元</span>
+    <span>会员专属折扣</span>
+    <span>满300减50</span>
+    <span>免运费券已到账</span>
+    <span>限时特惠进行中</span>
+    <span>新用户首单立减100元</span>
+    <span>会员专属折扣</span>
+    <span>满300减50</span>
+    <span>免运费券已到账</span>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="hero-eyebrow">EXCLUSIVE MEMBER PRIVILEGES</div>
+  <h1 class="hero-title">您的专属<span class="accent">优惠礼包</span><br>已经到账</h1>
+  <p class="hero-sub">精选优惠券 · 随时领取 · 畅享购物</p>
+</section>
+
+<!-- ══ FEATURED BIG COUPON ══ -->
+<section class="featured-section">
+  <div class="section-label">本月专属大礼</div>
+  <div class="big-coupon" onclick="openTear({unit:'¥',value:'200',title:'年度会员专属礼遇券',desc:'全品类通用，满500元可用，与其他优惠叠加使用，每位用户限领一次。',code:'VIP2024ANNUAL',expire:'2024年12月31日',color:'gold'})">
+    <div class="big-left">
+      <div class="big-eyebrow">ANNUAL VIP · EXCLUSIVE</div>
+      <h2 class="big-title">年度会员<br>专属礼遇券</h2>
+      <p class="big-desc">全品类通用 · 满500可用 · 可叠加<br>每位会员限领一次，即领即用</p>
+      <button class="big-btn">
+        立即领取 →
+      </button>
+    </div>
+    <div class="big-right">
+      <div class="big-amount">
+        <span class="big-unit">¥</span>
+        <span class="big-value">200</span>
+        <div class="big-label">优惠金额</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TABS ══ -->
+<div class="tabs-wrapper">
+  <div class="tabs" id="tabsEl">
+    <div class="tab-slider" id="tabSlider"></div>
+    <button class="tab-btn active" data-panel="all">全部优惠</button>
+    <button class="tab-btn" data-panel="new">新人专享</button>
+    <button class="tab-btn" data-panel="member">会员专属</button>
+    <button class="tab-btn" data-panel="limited">限时秒杀</button>
+  </div>
+</div>
+
+<!-- ══ COUPON CARDS ══ -->
+<section class="coupons-section">
+
+  <!-- ALL -->
+  <div class="coupons-panel active" id="panel-all">
+
+    <div class="coupon" onclick="openTear({unit:'¥',value:'50',title:'全场通用满减券',desc:'全品类适用，满200元可使用，不与其他满减叠加。',code:'ALL50OFF200',expire:'2024年11月30日',color:'gold'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">热门</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">50</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">全场通用满减券</div>
+          <div class="coupon-desc">满200元可用 · 全品类通用</div>
+          <div class="countdown">
+            <div class="countdown-unit"><span class="countdown-val" id="h1">02</span><span class="countdown-label">时</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="m1">34</span><span class="countdown-label">分</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="s1">17</span><span class="countdown-label">秒</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 11月30日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+    <div class="coupon red" onclick="openTear({unit:'¥',value:'30',title:'美食餐饮专享券',desc:'美食、餐饮、外卖类目适用，满100元可使用。',code:'FOOD30OFF100',expire:'2024年11月15日',color:'red'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">餐饮</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">30</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">美食餐饮专享券</div>
+          <div class="coupon-desc">满100元可用 · 餐饮类目</div>
+          <div class="countdown">
+            <div class="countdown-unit"><span class="countdown-val" id="h2">05</span><span class="countdown-label">时</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="m2">18</span><span class="countdown-label">分</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="s2">44</span><span class="countdown-label">秒</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 11月15日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+    <div class="coupon sage" onclick="openTear({unit:'',value:'8折',title:'生鲜有机特惠折扣',desc:'精选有机果蔬、生鲜肉类专属折扣，单笔无门槛限制。',code:'FRESH80PCT',expire:'2024年12月01日',color:'sage'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">生鲜</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="value" style="font-size:52px">8折</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">生鲜有机特惠</div>
+          <div class="coupon-desc">无门槛 · 生鲜果蔬类</div>
+          <div class="countdown">
+            <div class="countdown-unit"><span class="countdown-val">23</span><span class="countdown-label">时</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val">59</span><span class="countdown-label">分</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="s3">59</span><span class="countdown-label">秒</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 12月01日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+    <div class="coupon" onclick="openTear({unit:'¥',value:'15',title:'运费险免单券',desc:'全平台包邮运费险，任意订单均可使用，无需满额。',code:'SHIP15FREE',expire:'2024年12月15日',color:'gold'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">包邮</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">15</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">运费险免单券</div>
+          <div class="coupon-desc">无门槛 · 全平台通用</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 12月15日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+    <div class="coupon red" onclick="openTear({unit:'¥',value:'80',title:'数码家电品类券',desc:'手机、电脑、家电类目适用，满500元可使用。',code:'TECH80OFF500',expire:'2024年11月20日',color:'red'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">数码</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">80</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">数码家电品类券</div>
+          <div class="coupon-desc">满500元可用 · 数码家电</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 11月20日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+    <div class="coupon sage" onclick="openTear({unit:'¥',value:'20',title:'美妆个护护肤券',desc:'美妆、护肤、个护类目专属，满150元可用。',code:'BEAUTY20OFF150',expire:'2024年12月10日',color:'sage'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">美妆</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">20</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">美妆个护护肤券</div>
+          <div class="coupon-desc">满150元可用 · 美妆个护</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 12月10日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NEW -->
+  <div class="coupons-panel" id="panel-new">
+    <div class="coupon red" onclick="openTear({unit:'¥',value:'100',title:'新用户首单大礼券',desc:'仅限新注册用户使用，首次下单立减100元，无品类限制。',code:'NEW100FIRST',expire:'注册后7天内',color:'red'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">新人</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">100</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">新用户首单大礼券</div>
+          <div class="coupon-desc">无门槛 · 仅限新用户 · 首次使用</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">注册后7天内有效</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+    <div class="coupon" onclick="openTear({unit:'¥',value:'50',title:'新人专属第二单券',desc:'新注册用户第二次下单专属优惠，满300元可用。',code:'NEW50SECOND',expire:'注册后30天内',color:'gold'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">新人</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">50</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">新人专属第二单券</div>
+          <div class="coupon-desc">满300元可用 · 第二单专享</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">注册后30天内有效</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEMBER -->
+  <div class="coupons-panel" id="panel-member">
+    <div class="coupon" onclick="openTear({unit:'¥',value:'200',title:'年度会员专属礼遇',desc:'年度会员专属，全品类通用，满500元可用，可与折扣叠加。',code:'VIP200ANN',expire:'2024年12月31日',color:'gold'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">年度VIP</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">200</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">年度会员专属礼遇</div>
+          <div class="coupon-desc">满500元可用 · 可叠加折扣</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">有效至 12月31日</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+    <div class="coupon sage" onclick="openTear({unit:'',value:'9折',title:'会员生日专属折扣',desc:'生日当月专属9折优惠，全品类适用，每月仅限一次。',code:'BDAY90PCT',expire:'生日当月有效',color:'sage'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">生日礼</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="value" style="font-size:52px">9折</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">会员生日专属折扣</div>
+          <div class="coupon-desc">无门槛 · 全品类 · 生日当月</div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">生日当月有效</div>
+        <button class="coupon-btn">立即领取</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIMITED -->
+  <div class="coupons-panel" id="panel-limited">
+    <div class="coupon red" onclick="openTear({unit:'¥',value:'60',title:'今日秒杀限时专享',desc:'每天限量100张，先到先得，全品类通用，满250可用。',code:'FLASH60TODAY',expire:'今日24:00截止',color:'red'})">
+      <div class="coupon-band"></div>
+      <div class="coupon-tag">限时</div>
+      <div class="coupon-body">
+        <div class="coupon-amount"><span class="unit">¥</span><span class="value">60</span></div>
+        <div class="coupon-divider-v"></div>
+        <div class="coupon-info">
+          <div class="coupon-title">今日秒杀限时专享</div>
+          <div class="coupon-desc">满250元可用 · 限量100张</div>
+          <div class="countdown">
+            <div class="countdown-unit"><span class="countdown-val" id="fh">00</span><span class="countdown-label">时</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="fm">00</span><span class="countdown-label">分</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit"><span class="countdown-val" id="fs">00</span><span class="countdown-label">秒</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tear-line"><div class="tear-dots"></div></div>
+      <div class="coupon-footer">
+        <div class="coupon-expire">今日24:00截止</div>
+        <button class="coupon-btn">立即抢购</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══ TEAR OVERLAY ══ -->
+<div class="tear-overlay" id="tearOverlay">
+  <div class="tear-backdrop" onclick="closeTear()"></div>
+  <div class="tear-card-container" id="tearCard">
+    <div class="tear-top">
+      <div id="tearBand" class="coupon-band"></div>
+      <div class="tear-main-content">
+        <div class="tear-amount-big">
+          <span class="tear-unit" id="tearUnit"></span>
+          <span class="tear-value" id="tearValue" style="color: var(--gold)"></span>
+        </div>
+        <div class="tear-title" id="tearTitle"></div>
+        <div class="tear-desc-full" id="tearDesc"></div>
+      </div>
+    </div>
+    <div class="tear-mid-line"></div>
+    <div class="tear-bottom">
+      <div class="tear-footer-content">
+        <div class="tear-code-row">
+          <div class="tear-code" id="tearCode">PROMO2024</div>
+          <button class="copy-btn" onclick="copyCode()">复制</button>
+        </div>
+        <div style="font-size:11px; color:var(--ink-light); margin-bottom:16px;" id="tearExpire"></div>
+        <button class="tear-close-btn" onclick="closeTear()">完成领取 · 去使用</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>© 2024 优享会员平台 · 所有优惠均有使用条款</p>
+  <p style="margin-top:6px; opacity:0.5;">优惠券使用请遵守平台规定 · 最终解释权归平台所有</p>
+</footer>
+
+<script>
+/* ══ TAB SWITCHING ══ */
+const tabs = document.querySelectorAll('.tab-btn');
+const slider = document.getElementById('tabSlider');
+
+function updateSlider(btn) {
+  const rect = btn.getBoundingClientRect();
+  const tabsRect = document.getElementById('tabsEl').getBoundingClientRect();
+  slider.style.width = rect.width + 'px';
+  slider.style.transform = `translateX(${rect.left - tabsRect.left - 6}px)`;
+}
+
+// Init slider
+setTimeout(() => {
+  updateSlider(document.querySelector('.tab-btn.active'));
+}, 50);
+
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateSlider(btn);
+
+    document.querySelectorAll('.coupons-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+  });
+});
+
+/* ══ TEAR ANIMATION ══ */
+let currentColor = 'gold';
+
+function openTear(data) {
+  const overlay = document.getElementById('tearOverlay');
+  const band = document.getElementById('tearBand');
+  
+  // Set color
+  currentColor = data.color;
+  const colorMap = { gold: 'var(--gold)', red: 'var(--red)', sage: 'var(--sage)' };
+  const gradMap = {
+    gold: 'linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold))',
+    red: 'linear-gradient(90deg, var(--red), #E74C3C, var(--red))',
+    sage: 'linear-gradient(90deg, var(--sage), #8FA88F, var(--sage))'
+  };
+  
+  band.style.background = gradMap[data.color];
+  document.getElementById('tearUnit').textContent = data.unit;
+  document.getElementById('tearValue').textContent = data.value;
+  document.getElementById('tearValue').style.color = colorMap[data.color];
+  document.getElementById('tearUnit').style.color = colorMap[data.color];
+  document.getElementById('tearTitle').textContent = data.title;
+  document.getElementById('tearDesc').textContent = data.desc;
+  document.getElementById('tearCode').textContent = data.code;
+  document.getElementById('tearExpire').textContent = '有效期至：' + data.expire;
+
+  overlay.style.opacity = '1';
+  overlay.classList.add('active');
+  
+  // Sequence: appear → tear → settle
+  setTimeout(() => overlay.classList.add('tearing'), 500);
+  setTimeout(() => {
+    overlay.classList.remove('tearing');
+    overlay.classList.add('torn');
+  }, 900);
+  setTimeout(() => {
+    overlay.classList.remove('torn');
+  }, 1300);
+
+  // Particles
+  spawnParticles(colorMap[data.color]);
+}
+
+function closeTear() {
+  const overlay = document.getElementById('tearOverlay');
+  overlay.style.opacity = '0';
+  setTimeout(() => {
+    overlay.classList.remove('active', 'tearing', 'torn');
+    overlay.style.opacity = '';
+  }, 400);
+}
+
+function spawnParticles(color) {
+  const colors = [color, 'var(--gold-light)', 'var(--cream)', '#fff'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${35 + Math.random() * 30}%;
+      top: ${35 + Math.random() * 30}%;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${4 + Math.random() * 8}px;
+      height: ${4 + Math.random() * 8}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${0.8 + Math.random() * 0.8}s;
+      animation-delay: ${Math.random() * 0.3}s;
+      transform: translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*200}px);
+    `;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2000);
+  }
+}
+
+function copyCode() {
+  const code = document.getElementById('tearCode').textContent;
+  navigator.clipboard.writeText(code).catch(() => {});
+  const btn = document.querySelector('.copy-btn');
+  btn.textContent = '✓ 已复制';
+  btn.style.background = 'var(--sage)';
+  btn.style.color = 'white';
+  setTimeout(() => {
+    btn.textContent = '复制';
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 2000);
+}
+
+/* ══ COUNTDOWN TIMERS ══ */
+function padZ(n) { return String(n).padStart(2, '0'); }
+
+// Timer 1: 2h34m from now
+let t1 = 2*3600 + 34*60 + 17;
+// Timer 2: 5h18m from now
+let t2 = 5*3600 + 18*60 + 44;
+
+// End of day countdown
+function getMidnightSecs() {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(23, 59, 59, 999);
+  return Math.round((midnight - now) / 1000);
+}
+
+let flash = getMidnightSecs();
+
+setInterval(() => {
+  if (t1 > 0) t1--;
+  if (t2 > 0) t2--;
+  if (flash > 0) flash--;
+
+  const h1 = document.getElementById('h1'), m1 = document.getElementById('m1'), s1 = document.getElementById('s1');
+  if (h1) { h1.textContent = padZ(Math.floor(t1/3600)); m1.textContent = padZ(Math.floor((t1%3600)/60)); s1.textContent = padZ(t1%60); }
+  
+  const h2 = document.getElementById('h2'), m2 = document.getElementById('m2'), s2 = document.getElementById('s2');
+  if (h2) { h2.textContent = padZ(Math.floor(t2/3600)); m2.textContent = padZ(Math.floor((t2%3600)/60)); s2.textContent = padZ(t2%60); }
+
+  const fh = document.getElementById('fh'), fm = document.getElementById('fm'), fs = document.getElementById('fs');
+  if (fh) { fh.textContent = padZ(Math.floor(flash/3600)); fm.textContent = padZ(Math.floor((flash%3600)/60)); fs.textContent = padZ(flash%60); }
+
+  const s3 = document.getElementById('s3');
+  if (s3) { s3.textContent = padZ(new Date().getSeconds()); }
+}, 1000);
+
+/* ══ SCROLL REVEAL ══ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ══ KEYBOARD ══ */
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTear(); });
+</script>
+</body>
+</html>
