@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ 动态卡片画廊 · Vue 版</title>
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #f6f9fc 0%, #e9f1f8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        #app {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 2.2rem;
+            letter-spacing: -0.01em;
+            color: #1e2f4e;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #4a5f7a;
+            margin-bottom: 2rem;
+            border-left: 5px solid #3b82f6;
+            padding-left: 1rem;
+            font-weight: 400;
+        }
+
+        /* 控制栏：添加卡片 + 筛选 */
+        .control-panel {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 1.5rem 1.8rem;
+            border-radius: 32px;
+            box-shadow: 0 15px 30px -10px rgba(0,20,40,0.1);
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem 2rem;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .add-section {
+            display: flex;
+            gap: 0.5rem;
+            flex: 2 1 260px;
+        }
+        .add-section input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #cddae9;
+            border-radius: 48px;
+            font-size: 1rem;
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+        .add-section input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+        button {
+            background: #1e2f4e;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 16px -6px rgba(30,47,78,0.25);
+            transition: all 0.15s;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+        }
+        button:hover {
+            background: #2a3f64;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 22px -8px rgba(30,47,78,0.3);
+        }
+        button.outline {
+            background: transparent;
+            color: #1e2f4e;
+            box-shadow: none;
+            border: 1px solid #b6c8dd;
+            backdrop-filter: none;
+        }
+        button.outline:hover {
+            background: white;
+            border-color: #3b82f6;
+            color: #1e2f4e;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .filter-badge {
+            background: white;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #1e2f4e;
+            border: 1px solid #cddae9;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.8rem;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.6rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.07), 0 5px 10px -4px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 40px -12px rgba(0,35,70,0.12);
+            border-color: #cbdffc;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.96); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+        }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 20px;
+            background: #d4e2fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0b1c2e;
+        }
+        .info .category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #557da5;
+            font-weight: 500;
+        }
+        .card p {
+            color: #2f4057;
+            line-height: 1.5;
+            margin: 0.7rem 0 1.3rem 0;
+            flex: 1;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px dashed #c7d9e9;
+            padding-top: 1rem;
+            margin-top: 0.2rem;
+        }
+        .tag {
+            background: #ecf3fb;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #1f4973;
+        }
+        .delete-btn {
+            background: none;
+            box-shadow: none;
+            color: #8fa8c7;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            border: 1px solid #d3e0ee;
+        }
+        .delete-btn:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+            transform: scale(1.02);
+        }
+
+        .empty-message {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 3rem;
+            color: #6a7f9b;
+            background: rgba(255,255,255,0.4);
+            border-radius: 48px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>📇 卡片集 · 动态画廊</h1>
+        <div class="subtitle">点击筛选 · 实时添加 · 即改即现</div>
+
+        <!-- 动态控制区 -->
+        <div class="control-panel">
+            <div class="add-section">
+                <input 
+                    type="text" 
+                    v-model="newName" 
+                    placeholder="输入名称, 如: 周末计划" 
+                    @keyup.enter="addCard"
+                />
+                <button @click="addCard">➕ 新建卡片</button>
+            </div>
+            <div class="filter-group">
+                <span class="filter-badge">🔍 筛选</span>
+                <button 
+                    @click="currentFilter = 'all'"
+                    :class="['outline', { 'button-active': currentFilter === 'all' }]"
+                >全部</button>
+                <button 
+                    @click="currentFilter = '工作'"
+                    :class="['outline', { 'button-active': currentFilter === '工作' }]"
+                >💼 工作</button>
+                <button 
+                    @click="currentFilter = '生活'"
+                    :class="['outline', { 'button-active': currentFilter === '生活' }]"
+                >🌿 生活</button>
+                <button 
+                    @click="currentFilter = '灵感'"
+                    :class="['outline', { 'button-active': currentFilter === '灵感' }]"
+                >✨ 灵感</button>
+            </div>
+        </div>
+
+        <!-- 动态卡片网格 —— 响应式渲染 -->
+        <div class="card-grid">
+            <div v-for="card in filteredCards" :key="card.id" class="card">
+                <div class="card-header">
+                    <div class="avatar">{{ card.emoji }}</div>
+                    <div class="info">
+                        <h3>{{ card.name }}</h3>
+                        <span class="category">{{ card.category }}</span>
+                    </div>
+                </div>
+                <p>{{ card.description }}</p>
+                <div class="card-footer">
+                    <span class="tag">{{ card.time }}</span>
+                    <button class="delete-btn" @click="deleteCard(card.id)">移除</button>
+                </div>
+            </div>
+            <!-- 空状态提示 -->
+            <div v-if="filteredCards.length === 0" class="empty-message">
+                🧘 这里空空如也 · 试试添加卡片或切换筛选
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                // ----- 响应式数据 (动态核心) -----
+                const newName = ref('');                   // 输入框绑定
+                const currentFilter = ref('all');          // 当前筛选分类
+                
+                // 卡片数据集 (动态数组)
+                const cards = ref([
+                    { 
+                        id: 1, 
+                        name: '季度规划', 
+                        category: '工作', 
+                        emoji: '📊', 
+                        description: '整理Q2重点事项，准备评审会议材料。', 
+                        time: '2小时前' 
+                    },
+                    { 
+                        id: 2, 
+                        name: '晨间阅读', 
+                        category: '生活', 
+                        emoji: '☕', 
+                        description: '读30分钟《深度工作》，保持专注习惯。', 
+                        time: '昨天' 
+                    },
+                    { 
+                        id: 3, 
+                        name: '设计系统', 
+                        category: '工作', 
+                        emoji: '🎨', 
+                        description: '组件库颜色变量更新，暗色模式适配。', 
+                        time: '昨天' 
+                    },
+                    { 
+                        id: 4, 
+                        name: '露营点子', 
+                        category: '灵感', 
+                        emoji: '🏕️', 
+                        description: '轻量化装备清单 + 周末营地备选。', 
+                        time: '3天前' 
+                    },
+                    { 
+                        id: 5, 
+                        name: '周末烘焙', 
+                        category: '生活', 
+                        emoji: '🥖', 
+                        description: '尝试免揉乡村面包，需要铸铁锅。', 
+                        time: '5天前' 
+                    }
+                ]);
+
+                // ----- 计算属性: 根据筛选条件动态返回卡片 (自动响应) -----
+                const filteredCards = computed(() => {
+                    if (currentFilter.value === 'all') {
+                        return cards.value;
+                    }
+                    return cards.value.filter(card => card.category === currentFilter.value);
+                });
+
+                // ----- 方法 (修改数据, 触发视图动态更新) -----
+                const addCard = () => {
+                    const name = newName.value.trim();
+                    if (!name) {
+                        alert('请填写卡片名称～');
+                        return;
+                    }
+                    
+                    // 随机分配一个分类(示例)，也可以固定。为了演示更丰富我们做简单分配
+                    const categories = ['工作', '生活', '灵感'];
+                    const randomCat = categories[Math.floor(Math.random() * categories.length)];
+                    const emojiMap = { '工作': '📌', '生活': '🌱', '灵感': '💡' };
+                    
+                    const newCard = {
+                        id: Date.now() + Math.floor(Math.random() * 1000),
+                        name: name,
+                        category: randomCat,
+                        emoji: emojiMap[randomCat] || '📄',
+                        description: `新添加的「${name}」卡片，可自行扩展描述。`,
+                        time: '刚刚'
+                    };
+                    
+                    cards.value.push(newCard);   // 动态添加进数组，视图自动更新
+                    newName.value = '';          // 清空输入框
+                };
+
+                const deleteCard = (id) => {
+                    // 过滤掉要删除的卡片 (产生新数组)
+                    cards.value = cards.value.filter(card => card.id !== id);
+                };
+
+                // 可选: 添加一个高亮active样式 (为了视觉)
+                // 直接在模板里用 :class 判断
+
+                return {
+                    newName,
+                    cards,
+                    currentFilter,
+                    filteredCards,
+                    addCard,
+                    deleteCard
+                };
+            }
+        }).mount('#app');
+    </script>
+    <!-- 添加一个小样式让激活筛选按钮更明显 (动态绑定class用) -->
+    <style>
+        .button-active {
+            background: #1e2f4e !important;
+            color: white !important;
+            border-color: #1e2f4e !important;
+            box-shadow: 0 6px 12px -6px #1e2f4e60 !important;
+        }
+    </style>
+</body>
+</html>
