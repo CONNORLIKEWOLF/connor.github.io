@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>赵纬信 · AI编程探索者</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- 统一样式表 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 自定义光标 -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- 粒子背景 -->
+<canvas id="canvas-bg"></canvas>
+
+<!-- ── 导航 ── -->
+<nav id="navbar">
+  <div class="nav-logo">ZWX.DEV</div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="works.html">AI作品</a>
+      <a href="contact.html">联系</a>
+    </div>
+    <button id="theme-toggle">
+      <span class="toggle-icon">☀</span>
+      <span class="toggle-label">白天</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-tag">AI编程探索者 · 自学前端</div>
+  <h1 class="hero-name">
+    赵纬信
+    <span class="line2">让AI成为助手</span>
+  </h1>
+  <p class="hero-subtitle">
+    专科毕业 · 用 <em>AI</em> 降低编程门槛，<br>
+    让每个人都能用代码表达创意。
+  </p>
+  <div class="hero-cta">
+    <a href="works.html" class="btn btn-primary">查看 AI 作品</a>
+    <a href="about.html" class="btn btn-ghost">了解更多</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- ── 跑马灯 ── -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span>HTML5</span> 前端标记语言 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>CSS3</span> 样式与动画 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>JavaScript</span> 交互逻辑 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>AI辅助</span> 提示词工程 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>GitHub</span> 版本管理 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>3+</span> 月自学经历 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>5+</span> AI项目完成 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>100+</span> 小时编码 <div class="ticker-dot"></div></div>
+    <!-- 重复一组实现无缝循环 -->
+    <div class="ticker-item"><span>HTML5</span> 前端标记语言 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>CSS3</span> 样式与动画 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>JavaScript</span> 交互逻辑 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>AI辅助</span> 提示词工程 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>GitHub</span> 版本管理 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>3+</span> 月自学经历 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>5+</span> AI项目完成 <div class="ticker-dot"></div></div>
+    <div class="ticker-item"><span>100+</span> 小时编码 <div class="ticker-dot"></div></div>
+  </div>
+</div>
+
+<!-- ── 技能 ── -->
+<section id="skills">
+  <div class="section-label">技能栈</div>
+  <h2 class="section-title reveal">我在学什么</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal" data-level="75">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">HTML5</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="65">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">CSS3 & 动画</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="55">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-name">JavaScript</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="85">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">AI辅助编程</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="70">
+      <div class="skill-icon">💬</div>
+      <div class="skill-name">提示词工程</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="60">
+      <div class="skill-icon">🐙</div>
+      <div class="skill-name">Git & GitHub</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 精选项目 ── -->
+<section id="projects" style="border-top:1px solid var(--border);">
+  <div class="section-label">精选</div>
+  <h2 class="section-title reveal">AI 辅助作品</h2>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-emoji">✨</div>
+      <div class="project-title">个人动态网站</div>
+      <div class="project-desc">你正在浏览的这个网站。粒子背景、主题切换、交互终端，完全由 AI 辅助开发。</div>
+      <div class="project-tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-emoji">🔧</div>
+      <div class="project-title">AI对话笔记工具</div>
+      <div class="project-desc">记录和AI交流时获得的好想法，数据存储在浏览器本地，刷新不丢失。</div>
+      <div class="project-tags">
+        <span class="tag">JavaScript</span>
+        <span class="tag">LocalStorage</span>
+        <span class="tag">HTML/CSS</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-emoji">📖</div>
+      <div class="project-title">前端学习路线图</div>
+      <div class="project-desc">设计精确的提示词，让AI帮助规划从零基础到就业的前端学习路径。</div>
+      <div class="project-tags">
+        <span class="tag">提示词设计</span>
+        <span class="tag">AI对话</span>
+        <span class="tag">学习规划</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 交互终端 ── -->
+<section class="terminal-section">
+  <div class="section-label">互动</div>
+  <h2 class="section-title reveal">试着和我对话</h2>
+  <div class="terminal reveal">
+    <div class="terminal-bar">
+      <div class="t-dot red"></div>
+      <div class="t-dot yellow"></div>
+      <div class="t-dot green"></div>
+      <span class="terminal-title">zwx@portfolio ~ bash</span>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="terminal-line"><span class="t-prompt">zwx@portfolio</span>&nbsp;<span class="t-out">~</span>&nbsp;<span class="t-cmd">whoami</span></div>
+      <div class="terminal-line t-out">赵纬信 — AI编程探索者，自学前端开发者</div>
+      <div class="terminal-line" style="margin-top:6px;"><span class="t-prompt">zwx@portfolio</span>&nbsp;<span class="t-out">~</span>&nbsp;<span class="t-cmd">help</span></div>
+      <div class="terminal-line t-out">可用命令: <span class="t-hi">about</span> · <span class="t-hi">skills</span> · <span class="t-hi">projects</span> · <span class="t-hi">contact</span> · <span class="t-hi">clear</span></div>
+    </div>
+    <div class="terminal-input-row">
+      <span class="t-prompt">zwx@portfolio</span>
+      <span class="t-out">~</span>
+      <input type="text" id="terminal-input" placeholder="输入命令，按 Enter 执行…" autocomplete="off" spellcheck="false" />
+      <span class="cursor-blink"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 联系入口 ── -->
+<section id="contact-cta" style="border-top:1px solid var(--border);">
+  <div class="section-label">联系</div>
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:32px;">
+    <h2 class="section-title reveal" style="margin-bottom:0;">一起做点<br>什么吧</h2>
+    <div class="reveal">
+      <p style="color:var(--muted); font-size:14px; line-height:1.8; max-width:340px; margin-bottom:24px;">
+        正在寻找实习机会或合作项目。如果你对 AI 辅助开发感兴趣，欢迎联系。
+      </p>
+      <a href="contact.html" class="btn btn-primary">联系我</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 页脚 ── -->
+<footer>
+  <div>© 2025 赵纬信 · 在AI时代学习编程</div>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    持续更新中
+  </div>
+</footer>
+
+<!-- 统一脚本 -->
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI作品 · 赵纬信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="canvas-bg"></canvas>
+
+<!-- ── 导航 ── -->
+<nav id="navbar">
+  <div class="nav-logo">ZWX.DEV</div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="works.html">AI作品</a>
+      <a href="contact.html">联系</a>
+    </div>
+    <button id="theme-toggle">
+      <span class="toggle-icon">☀</span>
+      <span class="toggle-label">白天</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Works Hero ── -->
+<div class="works-hero">
+  <div class="section-label">AI辅助开发</div>
+  <h1 class="hero-name" style="font-size:clamp(40px,6vw,80px); opacity:1; animation:none;">
+    用 AI 辅助完成的<br>
+    <span class="line2">编程作品</span>
+  </h1>
+</div>
+
+<!-- ── 作品列表 ── -->
+<section>
+  <!-- 筛选按钮 -->
+  <div class="works-filter">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="web">网页</button>
+    <button class="filter-btn" data-filter="tool">工具</button>
+    <button class="filter-btn" data-filter="prompt">提示词</button>
+  </div>
+
+  <div class="works-grid">
+
+    <div class="work-card reveal" data-category="web">
+      <div class="work-thumb">✨</div>
+      <div class="work-body">
+        <div class="work-title">个人动态作品集网站</div>
+        <div class="work-desc">
+          完全在 AI 辅助下开发的个人作品集。包含粒子背景、深夜/白天主题切换、交互终端、滚动动画和响应式布局。
+        </div>
+        <div class="work-meta">
+          <div class="work-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <a href="index.html" class="work-link">查看 →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-category="tool">
+      <div class="work-thumb">🔧</div>
+      <div class="work-body">
+        <div class="work-title">AI对话笔记工具</div>
+        <div class="work-desc">
+          记录和 AI 交流时获得的好想法，数据存在浏览器本地，刷新不丢失。支持标签分类和关键词搜索。
+        </div>
+        <div class="work-meta">
+          <div class="work-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">LocalStorage</span>
+            <span class="tag">HTML/CSS</span>
+          </div>
+          <span class="work-link" style="color:var(--muted);">进行中</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-category="prompt">
+      <div class="work-thumb">📖</div>
+      <div class="work-body">
+        <div class="work-title">前端学习路线图</div>
+        <div class="work-desc">
+          通过设计精确的提示词，让 AI 帮助规划从零基础到就业的前端学习路径，并持续更新迭代。
+        </div>
+        <div class="work-meta">
+          <div class="work-tags">
+            <span class="tag">提示词设计</span>
+            <span class="tag">AI对话</span>
+            <span class="tag">学习规划</span>
+          </div>
+          <span class="work-link" style="color:var(--muted);">文档整理中</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-category="tool">
+      <div class="work-thumb">🎨</div>
+      <div class="work-body">
+        <div class="work-title">CSS 渐变生成器</div>
+        <div class="work-desc">
+          用 AI 辅助开发的小工具，实时预览 CSS 渐变效果并一键复制代码。适合前端开发日常使用。
+        </div>
+        <div class="work-meta">
+          <div class="work-tags">
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">小工具</span>
+          </div>
+          <span class="work-link" style="color:var(--muted);">规划中</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── AI 编程理念 ── -->
+<section style="border-top:1px solid var(--border);">
+  <div class="section-label">理念</div>
+  <h2 class="section-title reveal">为什么用 AI 编程</h2>
+  <div class="philosophy-box reveal">
+    <h3>📡 AI 是放大器，不是替代者</h3>
+    <ul>
+      <li>解释报错信息，不认识的错误也能找到方向，降低学习挫败感。</li>
+      <li>生成代码片段，节省重复性工作的时间，专注在逻辑和创意上。</li>
+      <li>帮助理解复杂概念，用更通俗的方式讲解晦涩的技术文档。</li>
+      <li>Review 代码，指出潜在问题和优化空间，像一个随时在线的导师。</li>
+      <li>我的目标是：成为一个会用 AI 工具的开发者，而不是被 AI 替代的人。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── 页脚 ── -->
+<footer>
+  <div>© 2025 赵纬信 · 每个项目都有AI的参与</div>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    持续更新中
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

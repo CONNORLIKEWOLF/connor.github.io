@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>关于 · 赵纬信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="canvas-bg"></canvas>
+
+<!-- ── 导航 ── -->
+<nav id="navbar">
+  <div class="nav-logo">ZWX.DEV</div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="works.html">AI作品</a>
+      <a href="contact.html">联系</a>
+    </div>
+    <button id="theme-toggle">
+      <span class="toggle-icon">☀</span>
+      <span class="toggle-label">白天</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── About Hero ── -->
+<div class="about-hero">
+  <div class="section-label">关于我</div>
+  <h1 class="hero-name" style="font-size: clamp(40px,6vw,80px); opacity:1; animation:none;">
+    一个正在学习<br>
+    <span class="line2">AI编程的专科生</span>
+  </h1>
+</div>
+
+<!-- ── 主内容 ── -->
+<section>
+  <div class="about-grid">
+
+    <!-- 左列：头像 + 数据 -->
+    <div class="about-avatar reveal-left">
+      <div class="avatar-box">
+        🤖
+        <span class="avatar-corner tl">ZWX</span>
+        <span class="avatar-corner br">v2025</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">月自学</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">AI项目</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">小时编码</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右列：文字 -->
+    <div class="about-text reveal-right">
+      <p>
+        我是<em>赵纬信</em>，一名自学前端开发的专科生。我相信在 AI 时代，编程不再是少数人的专利，而是每个人都可以掌握的表达工具。
+      </p>
+      <p>
+        我正通过 <em>AI 辅助</em>学习 HTML、CSS、JavaScript，并尝试用这些技术做出自己的作品。这个网站就是一个例子——在 AI 的帮助下，我完成了从设计到实现的全部过程。
+      </p>
+      <p>
+        我的目标是：成为一个<em>会用 AI 工具的前端开发者</em>，而不是被 AI 替代的人。AI 是放大器，我负责提出想法和判断方向。
+      </p>
+      <div style="margin-top:32px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="works.html" class="btn btn-primary">查看作品</a>
+        <a href="contact.html" class="btn btn-ghost">联系我</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 技能 ── -->
+<section style="border-top:1px solid var(--border);">
+  <div class="section-label">技能</div>
+  <h2 class="section-title reveal">我在学什么</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal" data-level="75">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">HTML5</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="65">
+      <div class="skill-icon">🎨</div>
+      <div class="skill-name">CSS3 & 动画</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="55">
+      <div class="skill-icon">⚡</div>
+      <div class="skill-name">JavaScript</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="85">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">AI辅助编程</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="70">
+      <div class="skill-icon">💬</div>
+      <div class="skill-name">提示词工程</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+    <div class="skill-card reveal" data-level="60">
+      <div class="skill-icon">🐙</div>
+      <div class="skill-name">Git & GitHub</div>
+      <div class="skill-bar"><div class="skill-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 时间线 ── -->
+<section style="border-top:1px solid var(--border);">
+  <div class="section-label">历程</div>
+  <h2 class="section-title reveal">我走过的路</h2>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="tl-date">2024.10</div>
+      <div class="tl-line"></div>
+      <div class="tl-content">
+        <div class="tl-title">开始自学前端</div>
+        <div class="tl-desc">从 HTML 基础开始，用 AI 辅助理解每一个知识点，打下第一块砖。</div>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-date">2024.11</div>
+      <div class="tl-line"></div>
+      <div class="tl-content">
+        <div class="tl-title">完成第一个 CSS 项目</div>
+        <div class="tl-desc">学习 Flexbox 和 Grid，制作了第一个响应式布局页面。</div>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-date">2025.01</div>
+      <div class="tl-line"></div>
+      <div class="tl-content">
+        <div class="tl-title">探索 AI 辅助开发</div>
+        <div class="tl-desc">开始系统地研究提示词工程，学习如何与 AI 高效协作完成编程任务。</div>
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="tl-date">2025.04</div>
+      <div class="tl-line"></div>
+      <div class="tl-content">
+        <div class="tl-title">上线个人作品集</div>
+        <div class="tl-desc">这个网站正式上线，记录我的学习历程和 AI 辅助项目。持续更新中。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 页脚 ── -->
+<footer>
+  <div>© 2025 赵纬信 · 在AI时代学习编程</div>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    持续更新中
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

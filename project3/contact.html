@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>联系 · 赵纬信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="canvas-bg"></canvas>
+
+<!-- ── 导航 ── -->
+<nav id="navbar">
+  <div class="nav-logo">ZWX.DEV</div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html">首页</a>
+      <a href="about.html">关于</a>
+      <a href="works.html">AI作品</a>
+      <a href="contact.html">联系</a>
+    </div>
+    <button id="theme-toggle">
+      <span class="toggle-icon">☀</span>
+      <span class="toggle-label">白天</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Contact Hero ── -->
+<div class="contact-hero">
+  <div class="section-label">联系我</div>
+  <h1 class="hero-name" style="font-size:clamp(40px,6vw,80px); opacity:1; animation:none;">
+    一起做点<br>
+    <span class="line2">什么吧</span>
+  </h1>
+</div>
+
+<!-- ── 联系内容 ── -->
+<section>
+  <div class="contact-layout">
+
+    <!-- 左列：链接 -->
+    <div>
+      <p class="reveal" style="color:var(--muted); font-size:15px; line-height:1.9; margin-bottom:32px;">
+        我正在寻找实习机会或合作项目。如果你对 AI 辅助开发感兴趣，或者有什么想法想聊聊，欢迎通过以下方式联系我。
+      </p>
+      <div class="contact-links">
+        <a href="mailto:2136566823@qq.com?subject=联系你的网站&body=哈喽）" class="contact-link reveal">
+          <span class="contact-link-icon">📧</span>
+          Email
+        </a>
+        <a href="https://github.com/connorlikewolf" target="_blank" class="contact-link reveal">
+          <span class="contact-link-icon">🐙</span>
+          github.com/connorlikewolf
+        </a>
+        <a href="#" class="contact-link reveal">
+          <span class="contact-link-icon">💼</span>
+          LinkedIn（即将添加）
+        </a>
+        <a href="#" class="contact-link reveal">
+          <span class="contact-link-icon">🐦</span>
+          微博 / 小红书（即将添加）
+        </a>
+      </div>
+
+      <!-- 状态卡片 -->
+      <div class="reveal" style="margin-top:32px; border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; background:var(--surface);">
+        <div style="font-family:var(--font-mono); font-size:10px; color:var(--muted); letter-spacing:0.15em; margin-bottom:10px;">当前状态</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="status-dot"></div>
+          <span style="font-size:14px; color:var(--text);">开放实习 & 合作机会</span>
+        </div>
+        <div style="margin-top:8px; font-size:13px; color:var(--muted);">通常在 24 小时内回复</div>
+      </div>
+    </div>
+
+    <!-- 右列：表单 -->
+    <div class="reveal-right">
+      <div class="section-label" style="margin-bottom:24px;">发送消息</div>
+      <form class="contact-form" id="contact-form">
+        <div class="form-group">
+          <label class="form-label">你的名字</label>
+          <input type="text" class="form-input" placeholder="请输入你的名字" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">邮箱地址</label>
+          <input type="email" class="form-input" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">消息内容</label>
+          <textarea class="form-textarea" placeholder="写下你想说的…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">发送消息</button>
+        <div class="form-note">我通常在 24 小时内回复</div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 页脚 ── -->
+<footer>
+  <div>© 2025 赵纬信 · 在AI时代学习编程</div>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    持续更新中
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
