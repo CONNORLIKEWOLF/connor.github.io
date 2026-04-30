@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仪表板 · 赵纬信 | AI编程空间</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<div class="bg-aura"></div>
+
+<div class="cursor-custom" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRingElem"></div>
+
+<div class="dashboard-container">
+  <nav class="navbar-dash">
+    <div class="logo">ZWX<span>.</span>dev<span class="dash-suffix">● Dashboard</span></div>
+    <div class="user-badge">
+      <span class="user-name" id="displayUserName">AI 探索者</span>
+      <button class="logout-btn" id="logoutBtn">← 退出登录</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="welcome-card animate-in">
+      <h1>✨ 欢迎回来，<span id="welcomeName">开发者</span></h1>
+      <p>你已成功进入 AI 编程空间 — 这里记录你的学习旅程与创作灵感。</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card animate-in" style="animation-delay: 0.05s">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number" id="statDays">0</div>
+        <div class="stat-label">连续学习天数</div>
+      </div>
+      <div class="stat-card animate-in" style="animation-delay: 0.1s">
+        <div class="stat-icon">🤖</div>
+        <div class="stat-number" id="statProjects">0</div>
+        <div class="stat-label">AI 辅助项目</div>
+      </div>
+      <div class="stat-card animate-in" style="animation-delay: 0.15s">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-number" id="statHours">0</div>
+        <div class="stat-label">累计编码小时</div>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card animate-in" style="animation-delay: 0.2s">
+        <h3>🎯 今日挑战</h3>
+        <p>完成一个响应式组件，尝试用 AI 生成新的 CSS 网格布局。</p>
+        <a href="#" class="btn-ghost" id="startChallenge">开始挑战 →</a>
+      </div>
+      <div class="feature-card animate-in" style="animation-delay: 0.25s">
+        <h3>📝 AI 学习笔记</h3>
+        <p>记录最近和 AI 对话时获得的前端技巧与提示词设计思路。</p>
+        <a href="#" class="btn-ghost" id="viewNotes">查看笔记 →</a>
+      </div>
+      <div class="feature-card animate-in" style="animation-delay: 0.3s">
+        <h3>🚀 项目工坊</h3>
+        <p>正在构思下一个 AI 辅助项目：个人效率工具 / 动态仪表板。</p>
+        <a href="#" class="btn-ghost" id="projectStudio">探索创意 →</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2025 赵纬信 · 在 AI 时代持续编程 · 每一个项目都有 AI 的智慧协作
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

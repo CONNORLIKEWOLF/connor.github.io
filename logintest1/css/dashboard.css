@@ -1,0 +1,217 @@
+/* ========== 仪表板专用样式 ========== */
+
+.dashboard-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* 导航栏 */
+.navbar-dash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(8, 8, 8, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--border-subtle);
+  padding: 1rem 2rem;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+}
+.logo span {
+  color: var(--accent);
+}
+.dash-suffix {
+  color: var(--text-muted);
+  margin-left: 8px;
+  font-weight: normal;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.user-name {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+.logout-btn {
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid var(--border-subtle);
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: none;
+  transition: all 0.2s;
+  font-family: var(--font-mono);
+}
+.logout-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 100px auto 0;
+}
+
+/* 欢迎卡片 */
+.welcome-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  border: 0.5px solid var(--border-subtle);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.welcome-card h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.welcome-card p {
+  color: var(--text-muted);
+}
+
+/* 统计卡片网格 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.stat-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  border: 0.5px solid var(--border-subtle);
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,122,255,0.3);
+  background: rgba(12,12,15,0.8);
+}
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.8rem;
+}
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+/* 功能卡片 */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.feature-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border-radius: 1.5rem;
+  border: 0.5px solid var(--border-subtle);
+  padding: 1.8rem;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.feature-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,122,255,0.2);
+}
+.feature-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.feature-card p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.btn-ghost {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  transition: opacity 0.2s;
+  cursor: none;
+}
+.btn-ghost:hover {
+  opacity: 0.7;
+}
+
+/* 页脚 */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 0.5px solid var(--border-subtle);
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  .navbar-dash {
+    padding: 0.8rem 1rem;
+  }
+  .welcome-card h1 {
+    font-size: 1.5rem;
+  }
+  .cursor-custom, .cursor-ring {
+    display: none;
+  }
+  body {
+    cursor: auto;
+  }
+}

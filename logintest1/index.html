@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>登录 · AI Studio | 赵纬信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="bg-aura"></div>
+<div class="particles-login" id="particleField"></div>
+
+<div class="cursor-custom" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRingElem"></div>
+
+<div class="login-container">
+  <div class="glass-card">
+    <div class="brand">
+      <div class="brand-logo">ZWX<span>.</span>dev<span style="font-weight:300; margin-left:6px;">✦</span></div>
+      <div class="brand-sub">AI 编程探索者 · 作品集入口</div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabLoginBtn">登录</button>
+      <button class="tab-btn" id="tabRegisterBtn">注册</button>
+    </div>
+
+    <!-- 登录表单 -->
+    <div id="loginPane" class="form-pane">
+      <div class="form-group">
+        <label class="input-label">邮箱 / 用户名</label>
+        <input type="text" class="input-field" id="loginUser" placeholder="demo@zwx.com 或 赵纬信" autocomplete="off">
+        <div class="error-message" id="loginUserError"></div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">密码</label>
+        <input type="password" class="input-field" id="loginPass" placeholder="········">
+        <button type="button" class="password-toggle" data-target="loginPass">👁</button>
+        <div class="error-message" id="loginPassError"></div>
+      </div>
+      <div class="form-extra">
+        <label class="checkbox">
+          <input type="checkbox" id="rememberCheck"> 记住我
+        </label>
+        <a href="#" style="color:var(--accent); text-decoration:none; font-size:0.7rem;">忘记密码?</a>
+      </div>
+      <button class="submit-btn" id="submitLogin">进入仪表板 →</button>
+      <div class="demo-hint">
+        ⚡ 演示账号: <code>demo@zwx.com</code> / 任意密码(≥1位)
+      </div>
+    </div>
+
+    <!-- 注册表单 -->
+    <div id="registerPane" class="form-pane hidden">
+      <div class="form-group">
+        <label class="input-label">用户名</label>
+        <input type="text" class="input-field" id="regName" placeholder="赵纬信 / ZWX">
+        <div class="error-message" id="regNameError"></div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">电子邮箱</label>
+        <input type="email" class="input-field" id="regEmail" placeholder="hello@zwx.dev">
+        <div class="error-message" id="regEmailError"></div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">密码</label>
+        <input type="password" class="input-field" id="regPass" placeholder="至少6位字符">
+        <button type="button" class="password-toggle" data-target="regPass">👁</button>
+        <div class="error-message" id="regPassError"></div>
+      </div>
+      <div class="form-extra">
+        <label class="checkbox">
+          <input type="checkbox" id="agreeTerms"> 同意 AI 时代开发者公约
+        </label>
+      </div>
+      <button class="submit-btn" id="submitRegister">创建账户 →</button>
+      <div class="demo-hint">✨ 模拟注册，成功后会跳转仪表板</div>
+    </div>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-message"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
