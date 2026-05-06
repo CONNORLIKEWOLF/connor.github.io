@@ -1,0 +1,31 @@
+<svg width="340" height="250" viewBox="0 0 340 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardA" x1="68" y1="24" x2="246" y2="172" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset=".58" stop-color="#EEE5D7"/>
+      <stop offset="1" stop-color="#C6AF93"/>
+    </linearGradient>
+    <linearGradient id="cardB" x1="124" y1="68" x2="304" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8EEE3"/>
+      <stop offset=".52" stop-color="#DEC9B2"/>
+      <stop offset="1" stop-color="#9C8064"/>
+    </linearGradient>
+    <filter id="cardShadow" x="52" y="16" width="254" height="218" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="22" stdDeviation="17" flood-color="#2C2118" flood-opacity=".16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#cardShadow)">
+    <rect x="70" y="34" width="180" height="128" rx="12" transform="rotate(-8 70 34)" fill="url(#cardA)" stroke="#17130F" stroke-opacity=".14"/>
+    <rect x="125" y="72" width="180" height="128" rx="12" transform="rotate(9 125 72)" fill="url(#cardB)" stroke="#17130F" stroke-opacity=".13"/>
+    <path d="M104 77H189" stroke="#17130F" stroke-opacity=".16" stroke-width="1.4"/>
+    <path d="M99 99H165" stroke="#17130F" stroke-opacity=".1" stroke-width="1.4"/>
+    <path d="M145 132H233" stroke="#17130F" stroke-opacity=".15" stroke-width="1.4"/>
+    <path d="M148 154H214" stroke="#17130F" stroke-opacity=".1" stroke-width="1.4"/>
+    <path d="M237 117C222 102 196 104 182 121C196 139 222 141 237 117Z" fill="#FFF8EC" fill-opacity=".28" stroke="#17130F" stroke-opacity=".1"/>
+    <circle cx="210" cy="122" r="18" stroke="#17130F" stroke-opacity=".11"/>
+    <text x="100" y="61" fill="#11100E" fill-opacity=".82" font-family="Georgia, 'Times New Roman', serif" font-size="17" letter-spacing="4">NOVA</text>
+    <text x="150" y="113" fill="#11100E" fill-opacity=".84" font-family="Georgia, 'Times New Roman', serif" font-size="18" letter-spacing="3.6">ATELIER</text>
+    <text x="151" y="180" fill="#11100E" fill-opacity=".43" font-family="Arial, sans-serif" font-size="8" letter-spacing="2.6">FORMULATION CARD</text>
+  </g>
+</svg>
