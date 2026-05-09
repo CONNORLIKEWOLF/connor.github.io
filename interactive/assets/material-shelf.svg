@@ -1,0 +1,55 @@
+<svg width="1600" height="1100" viewBox="0 0 1600 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1100" fill="#F8F6F1"/>
+  <g transform="translate(128 120)">
+    <rect width="1344" height="860" rx="30" fill="#FFFDF8" stroke="#D8D0C2" stroke-width="2"/>
+    <path d="M0 206H1344M0 430H1344M0 654H1344" stroke="#E4DDD1" stroke-width="2"/>
+    <path d="M336 0V860M672 0V860M1008 0V860" stroke="#E4DDD1" stroke-width="2"/>
+    <g transform="translate(54 48)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Unsplash</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">PHOTO</text>
+    </g>
+    <g transform="translate(389 48)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Lummi</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">AI IMAGE</text>
+    </g>
+    <g transform="translate(726 48)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Phosphor</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">ICON</text>
+    </g>
+    <g transform="translate(1062 48)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Spline</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">3D</text>
+    </g>
+    <g fill="#151411" opacity=".9">
+      <rect x="66" y="282" width="122" height="82" rx="16"/>
+      <rect x="214" y="282" width="70" height="82" rx="16" fill="#F0D5C7"/>
+      <circle cx="502" cy="322" r="48" fill="#E2EEE6"/>
+      <rect x="548" y="288" width="78" height="68" rx="18" fill="#12110F"/>
+      <path d="M806 284L914 360H764L872 284V374" stroke="#151411" stroke-width="16" stroke-linejoin="round"/>
+      <circle cx="1181" cy="320" r="60" fill="#F7E6A7"/>
+      <circle cx="1228" cy="356" r="35" fill="#E0ECF4"/>
+    </g>
+    <g transform="translate(54 498)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Fontshare</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">TYPE</text>
+    </g>
+    <g transform="translate(389 498)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Haikei</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">PATTERN</text>
+    </g>
+    <g transform="translate(726 498)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">Sketchfab</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">MODEL</text>
+    </g>
+    <g transform="translate(1062 498)" font-family="Arial, Helvetica, sans-serif" fill="#151411">
+      <text font-size="58" font-weight="700" letter-spacing="-2">fffuel</text>
+      <text y="72" font-size="20" fill="#6B655C" letter-spacing="2">NOISE</text>
+    </g>
+    <g stroke="#151411" stroke-width="10" opacity=".9" stroke-linecap="round">
+      <path d="M78 750H280"/>
+      <path d="M415 755C460 710 514 798 566 742C596 710 620 715 642 734"/>
+      <path d="M752 750H924M838 664V836"/>
+      <path d="M1085 784C1130 710 1195 810 1256 724"/>
+    </g>
+  </g>
+</svg>

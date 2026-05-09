@@ -1,0 +1,20 @@
+{
+  "name": "premium-scroll-resource-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "preview": "vite --host 0.0.0.0 --preview",
+    "check": "node --check script.js",
+    "verify": "node verification/final-verify.mjs",
+    "verify:stack": "node verification/verify-stack.mjs",
+    "verify:commands": "node verification/verify-commands.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.2.6"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.87.1"
+  }
+}
