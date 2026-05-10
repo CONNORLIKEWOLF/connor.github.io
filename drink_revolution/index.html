@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>饮·革命 | DRINK REVOLUTION — 每一滴都是一次革命</title>
+  <meta name="description" content="DRINK REVOLUTION 饮·革命 — 从300米深层岩泉到微米级气泡，重新定义一瓶饮品的旅程。电影级3D滚动叙事体验。">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,700|noto-serif-sc:400,500,600,700|inter:300,400,500,600,700,800|noto-sans-sc:300,400,500,600,700|jetbrains-mono:300,400,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="canvas-container" aria-hidden="true">
+  <canvas id="bg-canvas"></canvas>
+</div>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<div class="load-curtain" aria-hidden="true">
+  <div class="load-curtain__inner">
+    <span class="load-curtain__brand">DRINK REVOLUTION</span>
+    <div class="load-curtain__progress"><span></span></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <a class="brand magnetic" href="#top">
+    <span class="brand__mark">DR</span>
+    <span class="brand__text">饮·革命</span>
+  </a>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="打开菜单">
+  <label for="nav-toggle" class="nav-toggle-icon" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </label>
+  <nav class="site-nav">
+    <a class="magnetic" href="#scene-water">水源</a>
+    <a class="magnetic" href="#scene-craft">工艺</a>
+    <a class="magnetic" href="#scene-spark">气泡</a>
+    <a class="magnetic" href="#scene-flavor">风味</a>
+    <a class="magnetic" href="#scene-products">产品</a>
+  </nav>
+</header>
+
+<div class="chapter-indicator" aria-hidden="true">
+  <div class="chapter-indicator__track">
+    <span class="chapter-indicator__dot is-active" data-index="0"></span>
+    <span class="chapter-indicator__dot" data-index="1"></span>
+    <span class="chapter-indicator__dot" data-index="2"></span>
+    <span class="chapter-indicator__dot" data-index="3"></span>
+    <span class="chapter-indicator__dot" data-index="4"></span>
+    <span class="chapter-indicator__dot" data-index="5"></span>
+    <span class="chapter-indicator__dot" data-index="6"></span>
+  </div>
+  <span class="chapter-indicator__label">HERO</span>
+</div>
+
+<div class="toast-container" aria-live="polite"></div>
+
+<main>
+
+  <!-- ═══════════ SCENE 0: HERO ═══════════ -->
+  <section id="scene-hero" class="cinema-scene" data-scene="0" data-chapter="HERO">
+    <div class="scene-overlay scene-overlay--center">
+      <p class="scene-eyebrow" data-reveal>CRAFT BEVERAGE · EST. 2026</p>
+      <h1 class="scene-headline" data-split>
+        <span class="headline-line">每一滴</span>
+        <span class="headline-line">都是一次</span>
+        <span class="headline-line headline-accent">革命</span>
+      </h1>
+      <p class="scene-subtitle" data-reveal>
+        深层岩泉 × 低温慢酿 × 微米级气泡<br>
+        一瓶饮品可以如此复杂，也可以如此纯粹
+      </p>
+      <div class="scene-actions" data-reveal>
+        <button class="btn btn--primary magnetic" data-scroll-to="scene-water">探索旅程</button>
+        <button class="btn btn--ghost magnetic" data-scroll-to="scene-products">查看产品</button>
+      </div>
+    </div>
+    <div class="scroll-signal" aria-hidden="true">
+      <span class="scroll-signal__line"></span>
+      <span class="scroll-signal__text">SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 1: 水源 ═══════════ -->
+  <section id="scene-water" class="cinema-scene" data-scene="1" data-chapter="水源">
+    <div class="scene-overlay scene-overlay--left">
+      <p class="scene-eyebrow" data-reveal>01 — ORIGIN</p>
+      <h2 class="scene-headline scene-headline--md" data-split>
+        水源决定<br>一瓶饮品的灵魂
+      </h2>
+      <p class="scene-body" data-reveal>
+        长白山脉 300 米深处的玄武岩裂隙含水层，经 3000 年自然过滤，未经任何人为干预。每一滴水携带 7 种天然矿物离子——钙、镁、钾、钠、锶、偏硅酸、碳酸氢盐——构成无法复制的口感基底。
+      </p>
+      <p class="scene-body" data-reveal>
+        钠含量仅 0.03mg/L，清冽而不咸涩；偏硅酸含量 48mg/L，赋予水体丝绸般的顺滑口感。这是地球花了三千年调配的配方，我们只是把它装进了瓶子。
+      </p>
+      <blockquote class="water-quote" data-reveal>
+        “这种玄武岩裂隙水最难得的不是矿物数量，而是长周期过滤带来的稳定、克制和干净。”
+        <cite>— 地质水文顾问 林澈</cite>
+      </blockquote>
+      <div class="scene-stats" data-reveal>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="300">0</strong>
+          <span class="stat-unit">m</span>
+          <span class="stat-label">深层取水深度</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="7">0</strong>
+          <span class="stat-unit">种</span>
+          <span class="stat-label">天然矿物离子</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="3000">0</strong>
+          <span class="stat-unit">年</span>
+          <span class="stat-label">自然过滤周期</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 2: 工艺 ═══════════ -->
+  <section id="scene-craft" class="cinema-scene cinema-scene--split" data-scene="2" data-chapter="工艺">
+    <div class="scene-overlay scene-overlay--right">
+      <p class="scene-eyebrow" data-reveal>02 — CRAFT</p>
+      <h2 class="scene-headline scene-headline--md" data-split>
+        -5°C 低温<br>慢酿哲学
+      </h2>
+      <p class="scene-body" data-reveal>
+        大多数工业饮品采用 25°C 以上快速发酵，48 小时内完成。我们选择了一条更难的路：将温度控制在 -5°C 至 0°C 区间，让发酵周期延长至 72 小时。
+      </p>
+      <p class="scene-body" data-reveal>
+        低温抑制杂菌活性的同时，允许产香酵母缓慢释放酯类化合物——青苹果的清新、蜂蜜的圆润、花香的回甘，都在这个漫长的冷浸过程中自然形成，而非依赖人工香精。
+      </p>
+      <div class="scene-stats" data-reveal>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="72">0</strong>
+          <span class="stat-unit">h</span>
+          <span class="stat-label">低温发酵周期</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="5">0</strong>
+          <span class="stat-unit">°C</span>
+          <span class="stat-label">恒温控制精度 ±0.5°C</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="3">0</strong>
+          <span class="stat-unit">轮</span>
+          <span class="stat-label">独立口感盲测</span>
+        </div>
+      </div>
+      <div class="process-timeline" data-reveal>
+        <div class="process-step is-active">
+          <span class="process-step__num">01</span>
+          <strong>选料</strong>
+          <p>全球甄选单一产地原料，每批附产地溯源报告</p>
+        </div>
+        <div class="process-step">
+          <span class="process-step__num">02</span>
+          <strong>冷萃</strong>
+          <p>-5°C 低温环境下 72 小时缓慢萃取风味物质</p>
+        </div>
+        <div class="process-step">
+          <span class="process-step__num">03</span>
+          <strong>充气</strong>
+          <p>微米级碳酸化处理，控制气泡直径在 0.3mm±0.05mm</p>
+        </div>
+        <div class="process-step">
+          <span class="process-step__num">04</span>
+          <strong>瓶装</strong>
+          <p>无菌灌装线，每瓶独立编号，出厂前 3 轮盲测把关</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 3: 气泡 ═══════════ -->
+  <section id="scene-spark" class="cinema-scene" data-scene="3" data-chapter="气泡">
+    <div class="scene-overlay scene-overlay--center">
+      <p class="scene-eyebrow" data-reveal>03 — SPARK</p>
+      <h2 class="scene-headline" data-split>
+        气泡的直径<br>就是快乐的单位
+      </h2>
+      <p class="scene-body scene-body--lg" data-reveal>
+        研究表明，0.3mm 是碳酸气泡在口腔中爆裂的最优直径——足够大以产生明显的触觉反馈，足够小以保持细腻而非粗暴的口感。我们使用微孔碳酸化技术，将气泡直径严格控制在 0.3mm±0.05mm 范围内。
+      </p>
+      <p class="scene-body" data-reveal>
+        最终 pH 值 8.2 的弱碱性配方，既能中和运动后体内的乳酸堆积，又不会产生明显的碱味——这是经过 47 次配方迭代后找到的黄金平衡点。
+      </p>
+      <div class="scene-stats scene-stats--large" data-reveal>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="0.3">0</strong>
+          <span class="stat-unit">mm</span>
+          <span class="stat-label">气泡直径</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="8.2">0</strong>
+          <span class="stat-unit">pH</span>
+          <span class="stat-label">黄金平衡点</span>
+        </div>
+        <div class="stat-block">
+          <strong class="stat-number" data-count="47">0</strong>
+          <span class="stat-unit">次</span>
+          <span class="stat-label">配方迭代</span>
+        </div>
+      </div>
+      <p class="spark-note" data-reveal>
+        科学注释：细小气泡的上升速度更慢，能在舌面停留更久，因此触感更密集，香气释放也更均匀。
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 4: 风味 ═══════════ -->
+  <section id="scene-flavor" class="cinema-scene cinema-scene--split" data-scene="4" data-chapter="风味">
+    <div class="scene-overlay scene-overlay--left">
+      <p class="scene-eyebrow" data-reveal>04 — FLAVOR</p>
+      <h2 class="scene-headline scene-headline--md" data-split>
+        四种风味<br>四种人格
+      </h2>
+      <p class="scene-body" data-reveal>
+        每一款独立研发，独立酿造，不做勾兑。不是在同一款基液里加不同香精——而是从水源选择、发酵参数到充气压力，每一款都有自己独立的工艺参数表。
+      </p>
+      <div class="flavor-grid" data-reveal>
+        <div class="flavor-card is-active" data-flavor="classic">
+          <span class="flavor-card__icon">●</span>
+          <strong>经典原味</strong>
+          <p>矿物的原始表达。不添加任何风味物质，让长白山深层岩泉的 7 种矿物离子自己说话。口感清冽，收尾干净，适合懂得欣赏纯粹的人。</p>
+          <div class="flavor-notes">
+            <span>前调 · 矿物清冽</span>
+            <span>中调 · 丝绸顺滑</span>
+            <span>余味 · 干净回甘</span>
+          </div>
+        </div>
+        <div class="flavor-card" data-flavor="berry">
+          <span class="flavor-card__icon">●</span>
+          <strong>野莓风暴</strong>
+          <p>北欧森林的酸甜冒险。选用瑞典北部野生越橘与芬兰森林覆盆子，低温冷萃保留果实的完整香气谱。入口是明亮的酸，随之是覆盆子的甜，收尾带一丝越橘特有的微苦。</p>
+          <div class="flavor-notes">
+            <span>前调 · 明亮果酸</span>
+            <span>中调 · 覆盆子甜</span>
+            <span>余味 · 越橘微苦</span>
+          </div>
+        </div>
+        <div class="flavor-card" data-flavor="citrus">
+          <span class="flavor-card__icon">●</span>
+          <strong>柑橘日出</strong>
+          <p>地中海阳光的味道。意大利西西里岛血橙与西班牙瓦伦西亚甜橙的混合冷压果汁，在 -5°C 下与气泡水融合，保留了阳光下成熟的完整柑橘精油香气。</p>
+          <div class="flavor-notes">
+            <span>前调 · 橙皮精油</span>
+            <span>中调 · 血橙甜酸</span>
+            <span>余味 · 阳光回甘</span>
+          </div>
+        </div>
+        <div class="flavor-card" data-flavor="ginger">
+          <span class="flavor-card__icon">●</span>
+          <strong>姜柠浪潮</strong>
+          <p>热带风暴在舌尖登陆。秘鲁安第斯山区有机生姜经低温压榨后与海南无籽青柠的果皮油混合，姜的温热感与青柠的冷冽同时存在于口腔，形成独特的温度反差。</p>
+          <div class="flavor-notes">
+            <span>前调 · 青柠冷冽</span>
+            <span>中调 · 姜辣温热</span>
+            <span>余味 · 温度反差</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 5: 产品 ═══════════ -->
+  <section id="scene-products" class="cinema-scene" data-scene="5" data-chapter="产品">
+    <div class="scene-overlay scene-overlay--top">
+      <p class="scene-eyebrow" data-reveal>05 — PRODUCTS</p>
+      <h2 class="scene-headline scene-headline--sm" data-split>
+        选择你的那一瓶
+      </h2>
+      <p class="scene-body" data-reveal>
+        每瓶 330ml，独立编号，可溯源至批次和产线。四款都使用同一套深层岩泉基底，再以不同冷萃和充气参数塑造风味；免费配送，开瓶不满意全额退。
+      </p>
+    </div>
+    <div class="product-categories" data-reveal>
+      <span>零糖基底</span>
+      <span>低温冷萃</span>
+      <span>微米气泡</span>
+      <span>330ml 单瓶</span>
+    </div>
+    <div class="product-track" data-drag-scroll>
+      <article class="product-card" data-product="classic">
+        <div class="product-card__visual" data-3d-mini="classic"></div>
+        <div class="product-card__badge">招牌</div>
+        <h3>经典原味</h3>
+        <p class="product-card__desc">7 种矿物的原始表达，不添加、不修饰、不妥协</p>
+        <div class="product-card__specs">
+          <span>330ml</span><span>0 卡</span><span>pH 8.2</span>
+        </div>
+        <div class="product-card__bottom">
+          <span class="product-card__price">&yen;18</span>
+          <button class="btn btn--primary btn--sm add-to-cart" data-product-name="经典原味">加入购物车</button>
+        </div>
+      </article>
+      <article class="product-card" data-product="berry">
+        <div class="product-card__visual" data-3d-mini="berry"></div>
+        <div class="product-card__badge product-card__badge--hot">热门</div>
+        <h3>野莓风暴</h3>
+        <p class="product-card__desc">北欧野生越橘与覆盆子，低温冷萃 72 小时</p>
+        <div class="product-card__specs">
+          <span>330ml</span><span>12 卡</span><span>pH 8.0</span>
+        </div>
+        <div class="product-card__bottom">
+          <span class="product-card__price">&yen;22</span>
+          <button class="btn btn--primary btn--sm add-to-cart" data-product-name="野莓风暴">加入购物车</button>
+        </div>
+      </article>
+      <article class="product-card" data-product="citrus">
+        <div class="product-card__visual" data-3d-mini="citrus"></div>
+        <div class="product-card__badge">新品</div>
+        <h3>柑橘日出</h3>
+        <p class="product-card__desc">西西里血橙遇见瓦伦西亚甜橙，地中海阳光装瓶</p>
+        <div class="product-card__specs">
+          <span>330ml</span><span>15 卡</span><span>pH 7.9</span>
+        </div>
+        <div class="product-card__bottom">
+          <span class="product-card__price">&yen;22</span>
+          <button class="btn btn--primary btn--sm add-to-cart" data-product-name="柑橘日出">加入购物车</button>
+        </div>
+      </article>
+      <article class="product-card" data-product="ginger">
+        <div class="product-card__visual" data-3d-mini="ginger"></div>
+        <div class="product-card__badge">限量</div>
+        <h3>姜柠浪潮</h3>
+        <p class="product-card__desc">秘鲁有机生姜 × 海南青柠，温度反差的味觉实验</p>
+        <div class="product-card__specs">
+          <span>330ml</span><span>8 卡</span><span>pH 8.3</span>
+        </div>
+        <div class="product-card__bottom">
+          <span class="product-card__price">&yen;26</span>
+          <button class="btn btn--primary btn--sm add-to-cart" data-product-name="姜柠浪潮">加入购物车</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════ SCENE 6: 尾声 ═══════════ -->
+  <section id="scene-finale" class="cinema-scene" data-scene="6" data-chapter="尾声">
+    <div class="scene-overlay scene-overlay--center">
+      <p class="scene-eyebrow" data-reveal>JOIN THE REVOLUTION</p>
+      <h2 class="scene-headline" data-split>
+        饮品革命<br>从这一口开始
+      </h2>
+      <p class="scene-body scene-body--lg" data-reveal>
+        不是所有的改变都需要呐喊，也不必用复杂口号证明自己。<br>
+        有时候，一瓶清澈、有层次、刚好适合当下的水就够了。
+      </p>
+      <div class="brand-stats" data-reveal>
+        <div class="brand-stat">
+          <strong class="stat-number" data-count="128000">0</strong>
+          <span>瓶已售出</span>
+        </div>
+        <div class="brand-stat">
+          <strong class="stat-number" data-count="98.7">0</strong>
+          <span>% 好评率</span>
+        </div>
+        <div class="brand-stat">
+          <strong class="stat-number" data-count="34">0</strong>
+          <span>个城市可送达</span>
+        </div>
+      </div>
+      <div class="scene-actions" data-reveal>
+        <button class="btn btn--primary btn--lg magnetic" data-purchase-action>立即购买 · 首单免配送费</button>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <span>DRINK REVOLUTION &copy; 2026</span>
+      <span>饮·革命 保留所有权利</span>
+      <span>每一滴都是一次革命</span>
+    </footer>
+  </section>
+
+</main>
+
+<script src="https://unpkg.com/lenis@1.3.13/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="script.js"></script>
+</body>
+</html>
